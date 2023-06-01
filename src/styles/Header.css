@@ -1,0 +1,14 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+.logo {
+  /* Ihr Logo-Stil */
+}
+.search {
+  /* Ihr Such-Stil */
+}
+.menu {
+  /* Ihr Menü-Stil */
+}
