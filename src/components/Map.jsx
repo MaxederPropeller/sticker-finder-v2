@@ -41,7 +41,7 @@ function MapInitializer() {
 }
 
 const Map = () => {
-  const position = [51.505, -0.09];
+  const position = [46.7, 8.2];
   const [open, setOpen] = useState(false);
   const [markers, setMarkers] = useState([]); // Zustand für Marker hinzufügen
 
@@ -80,7 +80,7 @@ const Map = () => {
     <StyledMapContainer>
       <MapContainer
         center={position}
-        zoom={13}
+        zoom={8}
         style={{ height: "100%", width: "100%" }}
       >
         <MapInitializer />

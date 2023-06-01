@@ -6,6 +6,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { collection, addDoc, GeoPoint } from "firebase/firestore";
+import {
+  getStorage,
+  ref,
+  uploadString,
+  getDownloadURL,
+} from "firebase/storage";
 import "../styles/MarkerForm.css";
 
 const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
@@ -13,6 +19,7 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
   const [description, setDescription] = useState("");
   const [coordinates, setCoordinates] = useState("");
   const [image, setImage] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -30,7 +37,29 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
     }
   }, []);
 
+  const handleUploadImage = async (e) => {
+    setUploading(true);
+    const file = e.target.files[0];
+    const storage = getStorage();
+    const storageRef = ref(storage, `images/${file.name}`);
+
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64String = reader.result;
+      const snapshot = await uploadString(storageRef, base64String, "data_url");
+      const url = await getDownloadURL(snapshot.ref);
+      setImage(url);
+      setUploading(false);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const onSubmit = async () => {
+    if (uploading) {
+      alert("Bitte warten Sie, bis das Bild fertig hochgeladen ist.");
+      return;
+    }
+
     try {
       const [latitude, longitude] = coordinates
         .split(",")
@@ -52,7 +81,9 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
 
   return (
     <Dialog open={open} onClose={handleClose} className="dialog-container">
-      <DialogTitle className="dialog-title">Neuer Marker</DialogTitle>
+      <DialogTitle className="dialog-title">
+        Neuen Sticker gefunden?
+      </DialogTitle>
       <DialogContent className="dialog-content">
         <TextField
           autoFocus
@@ -84,11 +115,9 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
         />
         <TextField
           margin="dense"
-          label="Bild URL"
-          type="text"
+          type="file"
           fullWidth
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
+          onChange={handleUploadImage}
           className="textfield"
         />
       </DialogContent>
@@ -96,7 +125,7 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
         <Button onClick={handleClose} className="button">
           Abbrechen
         </Button>
-        <Button onClick={onSubmit} className="button">
+        <Button onClick={onSubmit} disabled={uploading} className="button">
           Speichern
         </Button>
       </DialogActions>

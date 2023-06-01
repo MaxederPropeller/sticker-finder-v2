@@ -3,13 +3,34 @@ import { Marker, Popup } from "react-leaflet";
 import L from "leaflet"; // Import Leaflet library
 
 // Define a custom icon
-const customIcon = new L.Icon({
-  iconUrl:
-    "https://cdn.shopify.com/s/files/1/0578/0770/0167/files/k1.png?v=1682167684", // URL to your custom icon
-  iconSize: [20, 20], // Size of the icon
-
-  popupAnchor: [-3, -76], // Point from which the popup should open relative to the iconAnchor
+let CustomIcon = L.DivIcon.extend({
+  options: {
+    className: "custom-icon", // assign a unique class to the icon
+    html: `<div style="
+        background: url(https://cdn.shopify.com/s/files/1/0578/0770/0167/files/k1.png?v=1682167684);
+        background-size: cover;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        position: relative;">
+          <div style="
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 0;
+            height: 0;
+            margin-left: -5px;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 10px solid #000;">
+          </div>
+      </div>`,
+    iconSize: [25, 25],
+    popupAnchor: [-3, -76],
+  },
 });
+
+const customIcon = new CustomIcon();
 
 const MapMarker = ({ position, data }) => {
   return (
