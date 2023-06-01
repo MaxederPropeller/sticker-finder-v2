@@ -2,6 +2,9 @@
   display: flex;
   justify-content: space-between;
   padding: 10px;
+  z-index: 1;
+  position: sticky;
+  height: fit-content;
 }
 .logo {
   /* Ihr Logo-Stil */
