@@ -13,3 +13,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Füllt die gesamte Höhe der Ansicht aus */
+  width: 100vw; /* Füllt die gesamte Breite der Ansicht aus */
+  overflow: hidden;
+}

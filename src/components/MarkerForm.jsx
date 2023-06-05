@@ -1,10 +1,8 @@
+// MarkerForm.js
 import React, { useState, useEffect } from "react";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import Slide from "@mui/material/Slide";
 import { collection, addDoc, GeoPoint } from "firebase/firestore";
 import {
   getStorage,
@@ -12,17 +10,50 @@ import {
   uploadString,
   getDownloadURL,
 } from "firebase/storage";
-import "../styles/MarkerForm.css";
+import PageOne from "./PageOne";
+import PageTwo from "./PageTwo";
+import PageThree from "./PageThree";
+import PageFour from "./PageFour";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
+  const [activeStep, setActiveStep] = useState(0);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [coordinates, setCoordinates] = useState("");
   const [image, setImage] = useState("");
   const [uploading, setUploading] = useState(false);
 
+  // Function to handle step change
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  // Load coordinates when the dialog is opened
   useEffect(() => {
+    if (open) {
+      fetchCoordinates();
+    }
+  }, [open]);
+
+  const fetchCoordinates = async () => {
     if (navigator.geolocation) {
+      // Check permission status
+      const permissionStatus = await navigator.permissions.query({
+        name: "geolocation",
+      });
+      if (permissionStatus.state === "denied") {
+        console.error("Permission to access geolocation was denied");
+        return;
+      }
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -30,12 +61,13 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
         },
         (error) => {
           console.error("Error getting location: ", error);
-        }
+        },
+        { enableHighAccuracy: true } // This option can help get more accurate GPS data on mobile devices
       );
     } else {
-      console.log("Geolocation not supported in this browser.");
+      console.error("Geolocation is not supported by this browser.");
     }
-  }, []);
+  };
 
   const handleUploadImage = async (e) => {
     setUploading(true);
@@ -72,63 +104,47 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
         image,
       });
       console.log("Document written with ID: ", docRef.id);
-      onMarkerAdded(); // Call the callback function after successful marker addition
+      onMarkerAdded();
       handleClose();
     } catch (e) {
       console.error("Error adding document: ", e);
     }
   };
+  const pages = [
+    <PageOne
+      coordinates={coordinates}
+      setCoordinates={setCoordinates}
+      onContinue={handleNext}
+    />,
+    <PageTwo
+      image={image}
+      uploading={uploading}
+      onImageUpload={handleUploadImage}
+      onContinue={handleNext}
+      onBack={handleBack}
+    />,
+    <PageThree
+      title={title}
+      setTitle={setTitle}
+      description={description}
+      setDescription={setDescription}
+      onContinue={handleNext}
+      onBack={handleBack}
+    />,
+    <PageFour
+      title={title}
+      description={description}
+      coordinates={coordinates}
+      image={image}
+      onSubmit={onSubmit}
+      onBack={handleBack}
+    />,
+  ];
 
   return (
-    <Dialog open={open} onClose={handleClose} className="dialog-container">
-      <DialogTitle className="dialog-title">
-        Neuen Sticker gefunden?
-      </DialogTitle>
-      <DialogContent className="dialog-content">
-        <TextField
-          autoFocus
-          margin="dense"
-          label="Title"
-          type="text"
-          fullWidth
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="textfield"
-        />
-        <TextField
-          margin="dense"
-          label="Beschreibung"
-          type="text"
-          fullWidth
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="textfield"
-        />
-        <TextField
-          margin="dense"
-          label="Koordinaten"
-          type="text"
-          fullWidth
-          value={coordinates}
-          onChange={(e) => setCoordinates(e.target.value)}
-          className="textfield"
-        />
-        <TextField
-          margin="dense"
-          type="file"
-          fullWidth
-          onChange={handleUploadImage}
-          className="textfield"
-        />
-      </DialogContent>
-      <DialogActions className="dialog-actions">
-        <Button onClick={handleClose} className="button">
-          Abbrechen
-        </Button>
-        <Button onClick={onSubmit} disabled={uploading} className="button">
-          Speichern
-        </Button>
-      </DialogActions>
+    <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}>
+      <DialogTitle>Neuen Sticker gefunden</DialogTitle>
+      {pages[activeStep]}
     </Dialog>
   );
 };

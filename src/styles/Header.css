@@ -2,10 +2,8 @@
   display: flex;
   justify-content: space-between;
   padding: 10px;
+  height: 5vh; /* Bestimmt die Höhe des Headers */
   z-index: 10;
-  position: sticky;
-  margin-bottom: auto;
-  height: fit-content;
 }
 .logo {
   /* Ihr Logo-Stil */
