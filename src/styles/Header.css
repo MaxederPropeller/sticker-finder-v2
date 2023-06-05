@@ -2,9 +2,28 @@
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  height: 5vh; /* Bestimmt die Höhe des Headers */
+  height: 5vh;
   z-index: 10;
+
+  /* Animierter Gradient */
+  background: linear-gradient(-45deg, #800080, #ee82ee, #da70d6, #9370db);
+  background-size: 200% 200%;
+  animation: gradient 15s ease infinite;
 }
+
+/* Schlüsselrahmen für die Animation */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 .logo {
   /* Ihr Logo-Stil */
 }

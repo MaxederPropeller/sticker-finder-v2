@@ -2,14 +2,7 @@
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-
-const styles = {
-  button: {
-    backgroundColor: "#0099cc",
-    color: "#fff",
-    margin: "5px",
-  },
-};
+import { styles } from "../styles/styles";
 
 const PageTwo = ({ image, uploading, onImageUpload, onContinue, onBack }) => {
   return (

@@ -17,7 +17,7 @@ code {
 .App {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Füllt die gesamte Höhe der Ansicht aus */
+  max-height: 100svh; /* Füllt die gesamte Höhe der Ansicht aus */
   width: 100vw; /* Füllt die gesamte Breite der Ansicht aus */
   overflow: hidden;
 }

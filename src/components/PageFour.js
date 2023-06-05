@@ -5,22 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 
-const styles = {
-  title: {
-    color: "#0066cc",
-    fontWeight: "bold",
-    marginBottom: "10px",
-  },
-  card: {
-    backgroundColor: "#f2f2f2",
-    marginBottom: "10px",
-  },
-  button: {
-    backgroundColor: "#0099cc",
-    color: "#fff",
-    margin: "5px",
-  },
-};
+import { styles } from "../styles/styles";
 
 const PageFour = ({
   title,
@@ -32,12 +17,12 @@ const PageFour = ({
 }) => {
   return (
     <div>
-      <Typography style={styles.title} variant="h6" component="div">
-        Überprüfung Ihrer Eingaben
+      <Typography style={styles.title} variant="body1" component="div">
+        Bitte überprüfe deine Entdeckung
       </Typography>
       <Card style={styles.card}>
         <CardContent>
-          <Typography variant="h6" component="div">
+          <Typography variant="body1" component="div">
             <strong>Titel:</strong> {title}
           </Typography>
           <Typography variant="body1" color="text.secondary">

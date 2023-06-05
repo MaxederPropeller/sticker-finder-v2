@@ -10,6 +10,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/system";
 
 import MarkerForm from "./MarkerForm";
+import { Snackbar, Alert } from "@mui/material";
 
 const StyledMapContainer = styled(Paper)({
   height: "95vh",
@@ -46,10 +47,21 @@ const Map = () => {
   const [open, setOpen] = useState(false);
   const [markers, setMarkers] = useState([]); // Zustand für Marker hinzufügen
 
-  // Callback function for when a new marker is added
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
   const onMarkerAdded = () => {
     fetchMarkers();
+    setSnackbarOpen(true);
   };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  // Callback function for when a new marker is added
 
   const fetchMarkers = async () => {
     const markerCollection = collection(db, "markers");
@@ -97,7 +109,12 @@ const Map = () => {
           />
         ))}
       </MapContainer>
-      <StyledFab color="primary" aria-label="add" onClick={handleOpen}>
+      <StyledFab
+        sx={{ backgroundColor: "hsl(250, 84%, 54%)" }}
+        color="primary"
+        aria-label="add"
+        onClick={handleOpen}
+      >
         <AddIcon />
       </StyledFab>
       <MarkerForm
@@ -106,6 +123,19 @@ const Map = () => {
         db={db}
         onMarkerAdded={onMarkerAdded}
       />
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Marker erfolgreich hinzugefügt!
+        </Alert>
+      </Snackbar>
     </StyledMapContainer>
   );
 };

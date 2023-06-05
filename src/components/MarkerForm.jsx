@@ -1,4 +1,3 @@
-// MarkerForm.js
 import React, { useState, useEffect } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -14,6 +13,8 @@ import PageOne from "./PageOne";
 import PageTwo from "./PageTwo";
 import PageThree from "./PageThree";
 import PageFour from "./PageFour";
+import "../styles/MarkerForm.css";
+import { styles } from "../styles/styles.js";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -110,6 +111,7 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
       console.error("Error adding document: ", e);
     }
   };
+
   const pages = [
     <PageOne
       coordinates={coordinates}
@@ -142,8 +144,15 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
   ];
 
   return (
-    <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}>
-      <DialogTitle>Neuen Sticker gefunden</DialogTitle>
+    <Dialog
+      style={styles.dialog}
+      open={open}
+      onClose={handleClose}
+      TransitionComponent={Transition}
+    >
+      <DialogTitle style={styles.dialogTitle}>
+        Neuen Sticker gefunden
+      </DialogTitle>
       {pages[activeStep]}
     </Dialog>
   );
