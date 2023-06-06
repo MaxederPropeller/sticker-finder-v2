@@ -5,8 +5,9 @@ import { styles } from "../styles/styles";
 
 const PageOne = ({ coordinates, setCoordinates, onContinue }) => {
   return (
-    <div>
+    <div className="dialogContainer">
       <TextField
+        className="TextField"
         margin="dense"
         label="Koordinaten"
         type="text"

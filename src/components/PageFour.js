@@ -16,9 +16,9 @@ const PageFour = ({
   onBack,
 }) => {
   return (
-    <div>
+    <div className="dialogContainer">
       <Typography style={styles.title} variant="body1" component="div">
-        Bitte überprüfe deine Entdeckung
+        Bitte überprüfe deine Entdeckung.
       </Typography>
       <Card style={styles.card}>
         <CardContent>
@@ -36,12 +36,14 @@ const PageFour = ({
           <CardMedia component="img" image={image} alt="Uploaded Image" />
         )}
       </Card>
-      <Button style={styles.button} variant="outlined" onClick={onBack}>
-        Zurück
-      </Button>
-      <Button style={styles.button} variant="contained" onClick={onSubmit}>
-        Absenden
-      </Button>
+      <div>
+        <Button style={styles.button} variant="outlined" onClick={onBack}>
+          Zurück
+        </Button>
+        <Button style={styles.button} variant="contained" onClick={onSubmit}>
+          Absenden
+        </Button>
+      </div>
     </div>
   );
 };

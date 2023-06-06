@@ -13,7 +13,7 @@ const PageThree = ({
   onBack,
 }) => {
   return (
-    <div>
+    <div className="dialogContainer">
       <TextField
         margin="dense"
         label="Title"
@@ -30,12 +30,14 @@ const PageThree = ({
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
-      <Button style={styles.button} onClick={onBack}>
-        Zurück
-      </Button>
-      <Button style={styles.button} onClick={onContinue}>
-        Weiter
-      </Button>
+      <div>
+        <Button style={styles.button} onClick={onBack}>
+          Zurück
+        </Button>
+        <Button style={styles.button} onClick={onContinue}>
+          Weiter
+        </Button>
+      </div>
     </div>
   );
 };

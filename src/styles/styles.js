@@ -18,7 +18,9 @@ export const styles = {
     fontFamily: "Poppins, sans-serif",
     backgroundColor: "hsl(250, 84%, 54%)",
     color: "hsl(0, 0%, 100%)",
-    margin: "5px",
+    margin: "2px",
+    marginBottom: "10px",
+    marginTop: "10px",
     padding: "15px 25px",
     borderRadius: "100vw",
     fontSize: "1rem",
@@ -48,5 +50,8 @@ export const styles = {
   },
   image: {
     maxWidth: "100%",
+  },
+  dialogContainer: {
+    width: "90%",
   },
 };

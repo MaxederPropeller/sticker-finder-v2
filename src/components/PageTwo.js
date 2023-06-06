@@ -6,7 +6,7 @@ import { styles } from "../styles/styles";
 
 const PageTwo = ({ image, uploading, onImageUpload, onContinue, onBack }) => {
   return (
-    <div>
+    <div className="dialogContainer">
       <TextField
         margin="dense"
         type="file"
@@ -15,12 +15,14 @@ const PageTwo = ({ image, uploading, onImageUpload, onContinue, onBack }) => {
         disabled={uploading}
       />
       {uploading && <CircularProgress />}
-      <Button style={styles.button} onClick={onBack}>
-        Zurück
-      </Button>
-      <Button style={styles.button} onClick={onContinue} disabled={uploading}>
-        Weiter
-      </Button>
+      <div>
+        <Button style={styles.button} onClick={onBack}>
+          Zurück
+        </Button>
+        <Button style={styles.button} onClick={onContinue} disabled={uploading}>
+          Weiter
+        </Button>
+      </div>
     </div>
   );
 };

@@ -145,6 +145,7 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
 
   return (
     <Dialog
+      className="dialog"
       style={styles.dialog}
       open={open}
       onClose={handleClose}
