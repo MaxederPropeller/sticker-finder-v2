@@ -278,7 +278,7 @@ const Header = () => {
       <AppBar position="static" sx={{ backgroundColor: "hsl(250, 84%, 54%)" }}>
         <Toolbar>
           <Typography variant="h6" component="div">
-            Stickerfinder
+            Stickerfinder.ch
           </Typography>
           <IconButton
             edge="start"
