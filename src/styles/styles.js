@@ -30,6 +30,21 @@ export const styles = {
     transition: "0.2s",
     willChange: "transform",
   },
+
+  buttontwo: {
+    fontFamily: "Poppins, sans-serif",
+    backgroundColor: "hsl(250, 84%, 54%)",
+    color: "hsl(0, 0%, 100%)",
+
+    padding: "15px 5px",
+    borderRadius: "100vw",
+    fontSize: "1rem",
+    fontWeight: "600",
+    textDecoration: "none",
+    cursor: "pointer",
+    transition: "0.2s",
+    willChange: "transform",
+  },
   title: {
     fontFamily: "Poppins, sans-serif",
     color: "hsl(230, 13%, 9%)",

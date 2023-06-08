@@ -1,7 +1,8 @@
 // PageThree.js
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { styles } from "../styles/styles";
 
 const PageThree = ({
@@ -32,10 +33,10 @@ const PageThree = ({
       />
       <div>
         <Button style={styles.button} onClick={onBack}>
-          Zurück
+          <ArrowBackIcon />
         </Button>
         <Button style={styles.button} onClick={onContinue}>
-          Weiter
+          <ArrowForwardIcon />
         </Button>
       </div>
     </div>

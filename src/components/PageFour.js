@@ -1,9 +1,10 @@
-// PageFour.js
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SendIcon from "@mui/icons-material/Send";
 
 import { styles } from "../styles/styles";
 
@@ -37,11 +38,11 @@ const PageFour = ({
         )}
       </Card>
       <div>
-        <Button style={styles.button} variant="outlined" onClick={onBack}>
-          Zurück
+        <Button style={styles.buttontwo} variant="outlined" onClick={onBack}>
+          <ArrowBackIcon />
         </Button>
         <Button style={styles.button} variant="contained" onClick={onSubmit}>
-          Absenden
+          <SendIcon />
         </Button>
       </div>
     </div>

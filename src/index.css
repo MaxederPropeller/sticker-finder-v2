@@ -17,7 +17,22 @@ code {
 .App {
   display: flex;
   flex-direction: column;
-  max-height: 100svh; /* Füllt die gesamte Höhe der Ansicht aus */
-  width: 100vw; /* Füllt die gesamte Breite der Ansicht aus */
+  max-height: 100svh;
+  width: 100vw;
   overflow: hidden;
+}
+
+.Banner {
+  height: auto;
+  background-color: hsl(250, 80%, 58%);
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 800px) {
+  .Banner {
+    flex-direction: column;
+    height: auto;
+  }
 }

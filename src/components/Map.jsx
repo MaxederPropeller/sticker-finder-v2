@@ -43,7 +43,7 @@ function MapInitializer() {
 }
 
 const Map = () => {
-  const position = [46.7, 8];
+  const position = [46.7, 7.8];
   const [open, setOpen] = useState(false);
   const [markers, setMarkers] = useState([]); // Zustand für Marker hinzufügen
 

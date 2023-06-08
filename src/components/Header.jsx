@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -12,13 +12,42 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
+  Slide,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
+import { db } from "../firebaseConfig"; // Importieren Sie Ihre Firestore-Instanz
+import "../index.css";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
+  const [totalMarkers, setTotalMarkers] = useState(1);
+  const [newMarkers, setNewMarkers] = useState(0);
+
+  useEffect(() => {
+    const fetchMarkers = async () => {
+      const markersCollection = collection(db, "markers");
+      const markerSnapshot = await getDocs(markersCollection);
+      setTotalMarkers(markerSnapshot.size);
+
+      const lastVisit = localStorage.getItem("lastVisit");
+      if (lastVisit) {
+        const newMarkerQuery = query(
+          markersCollection,
+          where("timestamp", ">", new Date(lastVisit)),
+          orderBy("timestamp")
+        );
+        const newMarkerSnapshot = await getDocs(newMarkerQuery);
+        setNewMarkers(newMarkerSnapshot.size);
+      }
+
+      localStorage.setItem("lastVisit", new Date().toISOString());
+    };
+
+    fetchMarkers();
+  }, []);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -214,42 +243,81 @@ const Header = () => {
     }
   };
 
-  // In Ihrer Dialog-Komponente
+  const TotalMarkerBanner = ({ totalMarkers, newMarkers }) => {
+    return (
+      <div className="Banner">
+        <div
+          style={{
+            color: "white",
+            textAlign: "center",
+            padding: "10px",
+            fontSize: "1rem",
+          }}
+        >
+          Insgesamt {totalMarkers} Sticker gefunden!
+        </div>
+
+        <Slide direction="down" in={newMarkers > 0} mountOnEnter unmountOnExit>
+          <div
+            style={{
+              color: "white",
+              textAlign: "center",
+              padding: "10px",
+              fontSize: "1rem",
+            }}
+          >
+            + {newMarkers} neue Sticker seit deinem letzten Besuch!
+          </div>
+        </Slide>
+      </div>
+    );
+  };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "hsl(250, 84%, 54%)" }}>
-      <Toolbar>
-        <Typography variant="h6" component="div">
-          Stickerfinder
-        </Typography>
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ ml: "auto" }}
-          onClick={handleDrawerOpen}
-        >
-          <MenuIcon />
-        </IconButton>
-      </Toolbar>
-      <Drawer anchor="right" open={open} onClose={handleDrawerClose}>
-        <List>
-          {menuItems.map((text, index) => (
-            <ListItem button key={text} onClick={() => handleDialogOpen(text)}>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <Dialog open={dialogOpen} onClose={handleDialogClose}>
-        <DialogTitle>{selectedItem}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {getDialogContent(selectedItem)}
-          </DialogContentText>
-        </DialogContent>
-      </Dialog>
-    </AppBar>
+    <div>
+      <AppBar position="static" sx={{ backgroundColor: "hsl(250, 84%, 54%)" }}>
+        <Toolbar>
+          <Typography variant="h6" component="div">
+            Stickerfinder
+          </Typography>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ ml: "auto" }}
+            onClick={handleDrawerOpen}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Toolbar>
+        <Drawer anchor="right" open={open} onClose={handleDrawerClose}>
+          <List>
+            {menuItems.map((text, index) => (
+              <ListItem
+                button
+                key={text}
+                onClick={() => handleDialogOpen(text)}
+              >
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
+        <Dialog open={dialogOpen} onClose={handleDialogClose}>
+          <DialogTitle>{selectedItem}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              {getDialogContent(selectedItem)}{" "}
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
+      </AppBar>
+      <TotalMarkerBanner
+        className="Banner"
+        totalMarkers={totalMarkers}
+        newMarkers={newMarkers}
+      />
+    </div>
   );
 };
 

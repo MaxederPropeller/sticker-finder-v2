@@ -4,6 +4,8 @@ import Button from "@mui/material/Button";
 import { styles } from "../styles/styles";
 import opencage from "opencage-api-client";
 
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+
 const PageOne = ({
   coordinates,
   setCoordinates,
@@ -50,7 +52,7 @@ const PageOne = ({
       />
 
       <Button style={styles.button} onClick={onContinue}>
-        Weiter
+        <ArrowForwardIcon />
       </Button>
     </div>
   );

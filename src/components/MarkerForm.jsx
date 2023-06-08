@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
-import { collection, addDoc, GeoPoint } from "firebase/firestore";
+import { collection, addDoc, GeoPoint, Timestamp } from "firebase/firestore";
 import {
   getStorage,
   ref,
@@ -74,7 +74,7 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
     setUploading(true);
     const file = e.target.files[0];
     const storage = getStorage();
-    const storageRef = ref(storage, `images/${file.name}`);
+    const storageRef = ref(storage, `kapkan/${file.name}`);
 
     const reader = new FileReader();
     reader.onloadend = async () => {
@@ -103,9 +103,17 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
         description,
         coordinates: geoPoint,
         image,
+        timestamp: Timestamp.now(), // Hinzufügen des Zeitstempels
       });
       console.log("Document written with ID: ", docRef.id);
       onMarkerAdded();
+
+      // Zustände zurücksetzen
+      setTitle("");
+      setDescription("");
+      setCoordinates("");
+      setImage("");
+
       handleClose();
     } catch (e) {
       console.error("Error adding document: ", e);
