@@ -100,7 +100,6 @@ const MapMarker = ({ position, data }) => {
           )}
 
           <p>{data.description}</p>
-          <p>{data.timestamp}</p>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Schließen</Button>

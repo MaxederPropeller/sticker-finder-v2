@@ -45,6 +45,31 @@ export const styles = {
     transition: "0.2s",
     willChange: "transform",
   },
+
+  buttonGo: {
+    fontFamily: "Poppins, sans-serif",
+    backgroundColor: "hsl(0, 64%, 54%)",
+    color: "hsl(0, 0%, 100%)",
+    margin: "2px",
+    willChange: "transform",
+    marginBottom: "10px",
+    marginTop: "10px",
+    padding: "15px 25px",
+    borderRadius: "100vw",
+  },
+
+  buttonWait: {
+    fontFamily: "Poppins, sans-serif",
+    backgroundColor: "hsl(150, 64%, 54%)",
+    color: "hsl(0, 0%, 100%)",
+    margin: "2px",
+    willChange: "transform",
+    marginBottom: "10px",
+    marginTop: "10px",
+    padding: "15px 25px",
+    borderRadius: "100vw",
+  },
+
   title: {
     fontFamily: "Poppins, sans-serif",
     color: "hsl(230, 13%, 9%)",

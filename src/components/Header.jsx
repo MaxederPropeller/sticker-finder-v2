@@ -23,7 +23,7 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
-  const [totalMarkers, setTotalMarkers] = useState(1);
+  const [totalMarkers, setTotalMarkers] = useState(0);
   const [newMarkers, setNewMarkers] = useState(0);
 
   useEffect(() => {
@@ -69,9 +69,12 @@ const Header = () => {
   const menuItems = [
     "StickerFinder.ch",
     "KAPKAN!",
+    "Wie bekomme ich KAPKAN! Sticker?",
     "Über uns",
+    "Disclaimer",
     "AGB's/ Nutzerbedingungen",
     "Datenschutzerklärung",
+    "Impressum",
   ];
 
   const getDialogContent = (item) => {
@@ -100,6 +103,32 @@ const Header = () => {
             Also, worauf warten Sie noch? Auf ins Abenteuer!
           </>
         );
+      case "Wie bekomme ich KAPKAN! Sticker?":
+        return (
+          <>
+            Sie sind auf der Suche nach den legendären KAPKAN! Stickern? Wir
+            haben gute Nachrichten für Sie! Es gibt verschiedene Möglichkeiten,
+            diese begehrten Sticker zu bekommen:
+            <br />
+            <br />
+            <h3>1. KAPKAN! Shop</h3>
+            Besuchen Sie den Shop auf kapkan.ch. Dort finden Sie eine Vielzahl
+            von KAPKAN! Stickern, die Sie direkt online bestellen können.
+            <br />
+            <br />
+            <h3>2. Kauf von KAPKAN! Produkten</h3>
+            Bei jedem Kauf von KAPKAN! Produkten erhalten Sie KAPKAN! Sticker
+            als kleines Dankeschön dazu. Eine tolle Möglichkeit, Ihre
+            Stickersammlung zu erweitern!
+            <br />
+            <br />
+            <h3>3. Veranstaltungen, Messen und Turnierabende</h3>
+            Wir sind regelmäßig auf verschiedenen Veranstaltungen, Messen und
+            Turnierabenden vertreten. Dort haben Sie die Chance, KAPKAN! Sticker
+            als Geschenk zu erhalten. Schauen Sie vorbei, wir freuen uns auf
+            Sie!
+          </>
+        );
 
       case "Über uns":
         return (
@@ -125,6 +154,51 @@ const Header = () => {
             geniale Idee oder eine Frage, die Sie nicht loslässt? Zögern Sie
             nicht und schreiben Sie uns eine E-Mail an info@astroboy.media. Wir
             freuen uns auf Ihre Nachricht!
+          </>
+        );
+      case "Disclaimer":
+        return (
+          <>
+            <h2>Haftungsausschluss</h2>
+            <br />
+            Bei StickerFinder.ch lieben wir Sticker und die Kreativität, die sie
+            ausdrücken. Aber wir lieben auch Respekt und Rechtschaffenheit.
+            Deshalb möchten wir klarstellen, dass wir niemanden dazu auffordern,
+            Sticker an fremdem Eigentum zu platzieren.
+            <br />
+            <br />
+            Das Anbringen von Stickern ohne Erlaubnis kann als Sachbeschädigung
+            angesehen werden und rechtliche Konsequenzen nach sich ziehen. Wir
+            übernehmen keine Verantwortung für das Platzieren von Stickern und
+            die daraus resultierenden Folgen.
+            <br />
+            <br />
+            Bitte respektieren Sie die Gesetze und die Rechte anderer.
+            Platzieren Sie Sticker nur dort, wo Sie die Erlaubnis dazu haben.
+            Seien Sie kreativ, aber seien Sie auch verantwortungsbewusst und
+            respektvoll.
+          </>
+        );
+      case "Impressum":
+        return (
+          <>
+            <h3>Unternehmensinformationen:</h3>
+            Firma: Astroboy.Media
+            <br />
+            Adresse: Goldiwilstrasse 8a, 3600 Thun
+            <br />
+            Telefon: +41 79 123 93 25
+            <br />
+            E-Mail: info@astroboy.media
+            <br />
+            <br />
+            <h3>Vertretungsberechtigte Personen:</h3>
+            Max Schweller, Geschäftsführer <br /> Thierry Jordi, Geschäftsführer
+            <br />
+            <br />
+            <h3>Verantwortlich für den Inhalt:</h3>
+            Max Schweller, Geschäftsführer <br />
+            Thierry Jordi, Geschäftsführer
           </>
         );
 

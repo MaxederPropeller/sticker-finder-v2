@@ -11,7 +11,7 @@ import {
 } from "firebase/storage";
 import PageOne from "./PageOne";
 import PageTwo from "./PageTwo";
-import PageThree from "./PageThree";
+
 import PageFour from "./PageFour";
 import "../styles/MarkerForm.css";
 import { styles } from "../styles/styles.js";
@@ -103,7 +103,7 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
         description,
         coordinates: geoPoint,
         image,
-        timestamp: Timestamp.now(), // Hinzufügen des Zeitstempels
+        timestamp: Timestamp.now(),
       });
       console.log("Document written with ID: ", docRef.id);
       onMarkerAdded();
@@ -127,6 +127,8 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
       title={title}
       setTitle={setTitle}
       onContinue={handleNext}
+      description={description}
+      setDescription={setDescription}
     />,
 
     <PageTwo
@@ -136,14 +138,7 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
       onContinue={handleNext}
       onBack={handleBack}
     />,
-    <PageThree
-      title={title}
-      setTitle={setTitle}
-      description={description}
-      setDescription={setDescription}
-      onContinue={handleNext}
-      onBack={handleBack}
-    />,
+
     <PageFour
       title={title}
       description={description}
