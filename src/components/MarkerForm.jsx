@@ -116,8 +116,11 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
     <PageOne
       coordinates={coordinates}
       setCoordinates={setCoordinates}
+      title={title}
+      setTitle={setTitle}
       onContinue={handleNext}
     />,
+
     <PageTwo
       image={image}
       uploading={uploading}

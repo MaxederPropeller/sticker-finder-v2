@@ -39,9 +39,10 @@ const Header = () => {
 
   const menuItems = [
     "StickerFinder.ch",
+    "KAPKAN!",
     "Über uns",
     "AGB's/ Nutzerbedingungen",
-    "KAPKAN!",
+    "Datenschutzerklärung",
   ];
 
   const getDialogContent = (item) => {
@@ -49,41 +50,147 @@ const Header = () => {
       case "StickerFinder.ch":
         return (
           <>
-            Willkommen zu StickerFinder.ch. <br /> <br /> Hier finden Sie alle
-            entdeckten Sticker. Zum aktuellen Zeitpunkt werden nur KAPKAN!
-            Sticker unterstützt. Weitere folgen in Kürze.
+            <h2>Willkommen in der bunten Welt von StickerFinder.ch!</h2>
+            <br />
+            Stellen Sie sich eine Welt vor, in der Sticker mehr als nur
+            Aufkleber sind. Eine Welt, in der jeder Sticker eine Geschichte
+            erzählt, ein Abenteuer darstellt und eine Entdeckung wartet.
+            Willkommen in dieser Welt, willkommen bei StickerFinder.ch!
             <br />
             <br />
-            Die Karte zeigt Ihnen alle gefundenen und auf der Plattform
-            hochgeladenen Sticker an. Wenn Sie einen Sticker finden, können Sie
-            diesen mit dem 'Plus-Button' melden und hochladen.
+            Aktuell sind wir auf der Jagd nach den legendären KAPKAN! Stickern.
+            Aber das ist nur der Anfang! Unser Ziel ist es, das größte
+            Sticker-Universum zu erschaffen, und dafür brauchen wir Eure Hilfe.
+            <br />
+            <br />
+            Unsere interaktive Karte ist wie ein Schatzplan, der Sie zu den
+            entdeckten Stickern führt. Haben Sie einen Sticker entdeckt, der
+            noch nicht auf unserer Karte ist? Drücken Sie einfach den
+            'Plus-Button' und teilen Sie Ihren Fund mit der Welt. Jeder Sticker,
+            den Sie hinzufügen, hilft uns, das Sticker-Universum zu erweitern.
+            Also, worauf warten Sie noch? Auf ins Abenteuer!
           </>
         );
+
       case "Über uns":
         return (
           <>
-            Wir sind ein engagiertes Team von Entwicklern, Designern und
-            Spielern, die eine Plattform für Stickerliebhaber geschaffen haben.
-            Unsere Mission ist es, das Finden und Teilen von Stickern so einfach
-            und zugänglich wie möglich zu machen.
+            <h2>Willkommen im Hauptquartier von StickerFinder.ch!</h2>
+            <br />
+            Hinter StickerFinder.ch steht ein buntes Team aus kreativen Köpfen,
+            leidenschaftlichen Spielern und Sticker-Enthusiasten. Wir sind
+            Programmierer, Designer, Künstler und Träumer, die zusammengekommen
+            sind, um eine Plattform für Stickerliebhaber zu schaffen.
             <br />
             <br />
-            Wir sind ständig bemüht, unsere Plattform zu verbessern und neue
-            Funktionen hinzuzufügen. Wenn Sie Fragen oder Anregungen haben,
-            melden sich sich gern unter kontak@kapkan.ch.
+            Unsere Mission? Das Finden und Teilen von Stickern so einfach,
+            spaßig und zugänglich wie möglich zu machen! Wir glauben, dass
+            Sticker mehr als nur Aufkleber sind. Sie sind Ausdruck von
+            Kreativität, sie sind Kunstwerke, sie sind kleine Geschichten. Und
+            wir wollen diese Geschichten mit der Welt teilen.
+            <br />
+            <br />
+            Unser Labor ist immer in Betrieb, um neue Funktionen zu entwickeln
+            und die Plattform zu verbessern. Wir experimentieren, wir testen,
+            wir optimieren. Und wir hören nie auf zu träumen. Haben Sie eine
+            geniale Idee oder eine Frage, die Sie nicht loslässt? Zögern Sie
+            nicht und schreiben Sie uns eine E-Mail an info@astroboy.media. Wir
+            freuen uns auf Ihre Nachricht!
           </>
         );
+
       case "AGB's/ Nutzerbedingungen":
         return (
           <>
-            Unsere allgemeinen Geschäftsbedingungen und Nutzerbedingungen finden
-            Sie auf unserer Website. Bitte lesen Sie diese sorgfältig durch,
-            bevor Sie unsere Plattform nutzen.
+            <h2>1. Einleitung</h2>
+            Stickerfinder.ch ist ein Produkt von Astroboy Media. Durch die
+            Nutzung unserer Plattform akzeptieren Sie diese Allgemeinen
+            Geschäftsbedingungen (AGB). Bitte lesen Sie diese sorgfältig durch.
+            <br />
+            <br />
+            <h2>2. Inhalte</h2>
+            Alle Inhalte, die auf Stickerfinder.ch veröffentlicht werden, können
+            von Astroboy Media und seinen Produkten für kommerzielle Zwecke
+            verwendet werden. Mit der Veröffentlichung von Inhalten auf unserer
+            Plattform gewähren Sie Astroboy Media ein nicht-exklusives,
+            weltweites, lizenzfreies Recht zur Nutzung, Vervielfältigung,
+            Anzeige und Verbreitung dieser Inhalte.
+            <br />
+            <br />
+            <h2>3. Datenschutz</h2>
+            Wir speichern keine benutzerbezogenen Daten längerfristig. Alle
+            gesammelten Daten werden ausschließlich zur Übermittlung und
+            korrekten Nutzung der Plattform verwendet. Weitere Informationen
+            finden Sie in unserer Datenschutzerklärung.
+            <br />
+            <br />
+            <h2>4. Rechte</h2>
+            Alle Rechte an der Plattform und ihren Inhalten liegen bei Astroboy
+            Media. Jegliche Nutzung der Inhalte, die nicht ausdrücklich in
+            diesen AGB erlaubt ist, bedarf der vorherigen schriftlichen
+            Zustimmung von Astroboy Media.
+            <br />
+            <br />
+            <h2>5. Änderungen der AGB</h2>
+            Astroboy Media behält sich das Recht vor, diese AGB jederzeit zu
+            ändern. Die fortgesetzte Nutzung der Plattform nach solchen
+            Änderungen stellt Ihre Zustimmung zu den neuen Bedingungen dar.
+            <br />
+            <br />
+            Durch die Nutzung von Stickerfinder.ch erklären Sie sich mit diesen
+            AGB einverstanden. Wenn Sie diesen Bedingungen nicht zustimmen,
+            dürfen Sie die Plattform nicht nutzen.
             <br />
             <br />
             Bei Fragen zu unseren Bedingungen können Sie uns gerne kontaktieren.
           </>
         );
+      case "Datenschutzerklärung":
+        return (
+          <>
+            <h2>1. Einleitung</h2>
+            Bei der Nutzung unserer Plattform Stickerfinder.ch, einem Produkt
+            von Astroboy Media, können wir bestimmte Daten erheben. Diese
+            Datenschutzerklärung erläutert, welche Daten wir erheben, wie wir
+            sie verwenden und wie wir sie schützen.
+            <br />
+            <br />
+            <h2>2. Datenerhebung</h2>
+            Mit Ihrer Zustimmung können wir Standortdaten und Bilder von Ihrem
+            Gerät erfassen. Diese Daten werden ausschließlich zur Verbesserung
+            Ihrer Nutzererfahrung auf unserer Plattform verwendet.
+            <br />
+            <br />
+            <h2>3. Datenspeicherung</h2>
+            Alle erfassten Daten werden in unserer Datenbank gespeichert. Bitte
+            beachten Sie, dass wir keine personenbezogenen Daten speichern. Die
+            Daten, die wir sammeln, sind vollständig anonym und können nicht
+            dazu verwendet werden, Sie persönlich zu identifizieren.
+            <br />
+            <br />
+            <h2>4. Datensicherheit</h2>
+            Wir setzen technische und organisatorische Sicherheitsmaßnahmen ein,
+            um Ihre Daten gegen Verlust, Zerstörung, Zugriff, Veränderung oder
+            Verbreitung durch unbefugte Personen zu schützen.
+            <br />
+            <br />
+            <h2>5. Änderungen der Datenschutzerklärung</h2>
+            Astroboy Media behält sich das Recht vor, diese Datenschutzerklärung
+            jederzeit zu ändern. Die fortgesetzte Nutzung der Plattform nach
+            solchen Änderungen stellt Ihre Zustimmung zu den neuen Bedingungen
+            dar.
+            <br />
+            <br />
+            Durch die Nutzung von Stickerfinder.ch erklären Sie sich mit dieser
+            Datenschutzerklärung einverstanden. Wenn Sie diesen Bedingungen
+            nicht zustimmen, dürfen Sie die Plattform nicht nutzen.
+            <br />
+            <br />
+            Bei Fragen zu unserer Datenschutzerklärung können Sie uns gerne
+            kontaktieren.
+          </>
+        );
+
       case "KAPKAN!":
         return (
           <>

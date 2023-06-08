@@ -45,7 +45,7 @@ export const styles = {
     padding: "1.5rem",
     backgroundColor: "hsl(0, 0%, 100%)",
     boxShadow: "0 0 0 1px hsla(230, 13%, 9%, 0.05)",
-    borderRadius: "0.75em",
+    borderRadius: "2em",
     marginBottom: "10px",
   },
   image: {
