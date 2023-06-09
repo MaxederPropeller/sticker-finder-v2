@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { db } from "../firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import MapMarker from "./Marker";
-
-import { Paper, Fab } from "@mui/material";
+import { Paper, Fab, Switch } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/system";
-
 import MarkerForm from "./MarkerForm";
 import { Snackbar, Alert } from "@mui/material";
+import { getDistance } from "geolib";
 
 const StyledMapContainer = styled(Paper)({
   height: "95vh",
@@ -42,12 +41,19 @@ function MapInitializer() {
   return null;
 }
 
-const Map = () => {
-  const position = [46.7, 7.8];
-  const [open, setOpen] = useState(false);
-  const [markers, setMarkers] = useState([]); // Zustand für Marker hinzufügen
+const ControlsContainer = styled("div")({
+  position: "absolute",
+  bottom: 8,
+  left: 8,
+  zIndex: 1000,
+});
 
+const Map = () => {
+  const [open, setOpen] = useState(false);
+  const [markers, setMarkers] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [geoCacheEnabled, setGeoCacheEnabled] = useState(true);
+  const [allMarkers, setAllMarkers] = useState([]); // Neu: für alle Marker
 
   const onMarkerAdded = () => {
     fetchMarkers();
@@ -61,9 +67,9 @@ const Map = () => {
     setSnackbarOpen(false);
   };
 
-  // Callback function for when a new marker is added
+  const position = useMemo(() => [46.7, 7.8], []);
 
-  const fetchMarkers = async () => {
+  const fetchMarkers = useCallback(async () => {
     const markerCollection = collection(db, "markers");
     const markerSnapshot = await getDocs(markerCollection);
     const markerList = markerSnapshot.docs.map((doc) => ({
@@ -74,12 +80,30 @@ const Map = () => {
         doc.data().coordinates.longitude,
       ],
     }));
-    setMarkers(markerList);
-  };
+
+    setAllMarkers(markerList); // Setzen aller Marker
+  }, [db]);
 
   useEffect(() => {
     fetchMarkers();
-  }, []);
+  }, [fetchMarkers]);
+
+  useEffect(() => {
+    if (!geoCacheEnabled) {
+      setMarkers(allMarkers);
+    } else {
+      const filteredMarkerList = allMarkers.filter((marker) => {
+        const distance = getDistance(
+          { latitude: position[0], longitude: position[1] },
+          { latitude: marker.coordinates[0], longitude: marker.coordinates[1] }
+        );
+
+        return distance <= 30000;
+      });
+
+      setMarkers(filteredMarkerList);
+    }
+  }, [geoCacheEnabled, allMarkers, position]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -109,6 +133,15 @@ const Map = () => {
           />
         ))}
       </MapContainer>
+      <ControlsContainer>
+        <Switch
+          checked={geoCacheEnabled}
+          onChange={() => setGeoCacheEnabled(!geoCacheEnabled)}
+          name="Geocaching"
+          inputProps={{ "aria-label": "Geocaching aktivieren/deaktivieren" }}
+        />
+        <span>{geoCacheEnabled ? "30km" : "Alle"}</span>
+      </ControlsContainer>
       <StyledFab
         sx={{ backgroundColor: "hsl(250, 84%, 54%)" }}
         color="primary"
