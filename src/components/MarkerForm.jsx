@@ -159,7 +159,7 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
     <Dialog
       className="dialog"
       style={styles.dialog}
-      open={open}
+      open={open || false}
       onClose={handleClose}
       TransitionComponent={Transition}
     >
