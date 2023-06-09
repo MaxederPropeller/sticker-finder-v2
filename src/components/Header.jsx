@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useMarkers } from "./MarkerContext";
 import {
   AppBar,
   Toolbar,
@@ -25,6 +26,7 @@ const Header = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [totalMarkers, setTotalMarkers] = useState(0);
   const [newMarkers, setNewMarkers] = useState(0);
+  const { markerCount } = useMarkers();
 
   useEffect(() => {
     const fetchMarkers = async () => {
@@ -388,7 +390,7 @@ const Header = () => {
       </AppBar>
       <TotalMarkerBanner
         className="Banner"
-        totalMarkers={totalMarkers}
+        totalMarkers={markerCount}
         newMarkers={newMarkers}
       />
     </div>

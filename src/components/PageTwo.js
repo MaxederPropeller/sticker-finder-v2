@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -16,15 +16,23 @@ const PageTwo = ({ image, uploading, onImageUpload, onContinue, onBack }) => {
   const [imageUploaded, setImageUploaded] = useState(false);
   const [uploadError, setUploadError] = useState(false);
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = async (event) => {
     setImageUploaded(false); // reset state when new file is being uploaded
-    onImageUpload(event)
-      .then(() => {
-        setImageUploaded(true); // set state to true when upload is successful
-        setUploadError(false); // reset error state
-      })
-      .catch(() => setUploadError(true)); // set error state if upload fails
+    setUploadError(false); // reset error state
+
+    try {
+      await onImageUpload(event);
+      setImageUploaded(true); // set state to true when upload is successful
+    } catch {
+      setUploadError(true); // set error state if upload fails
+    }
   };
+
+  useEffect(() => {
+    if (!uploading && imageUploaded) {
+      onContinue();
+    }
+  }, [uploading, imageUploaded]);
 
   return (
     <Box className="dialogContainer">

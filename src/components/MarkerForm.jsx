@@ -15,12 +15,14 @@ import PageTwo from "./PageTwo";
 import PageFour from "./PageFour";
 import "../styles/MarkerForm.css";
 import { styles } from "../styles/styles.js";
+import { useMarkers } from "./MarkerContext";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
+  const { addMarker } = useMarkers();
   const [activeStep, setActiveStep] = useState(0);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -115,6 +117,10 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
       setImage("");
 
       handleClose();
+
+      // Zurücksetzen des Schrittes
+      addMarker();
+      setActiveStep(0);
     } catch (e) {
       console.error("Error adding document: ", e);
     }

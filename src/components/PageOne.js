@@ -6,6 +6,8 @@ import opencage from "opencage-api-client";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Grid from "@mui/material/Grid";
+const MAX_SIZE_MB = 1;
+const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024; // 1MB in bytes
 
 const PageOne = ({
   coordinates,
@@ -18,6 +20,20 @@ const PageOne = ({
   onBack,
 }) => {
   const [location, setLocation] = useState("");
+
+  const checkSize = (str) => {
+    const sizeInBytes = new Blob([str]).size;
+    return sizeInBytes <= MAX_SIZE_BYTES;
+  };
+
+  const handleInputChange = (setter) => (event) => {
+    const value = event.target.value;
+    if (checkSize(value)) {
+      setter(value);
+    } else {
+      alert("Eingabe überschreitet das Limit von 1MB");
+    }
+  };
 
   useEffect(() => {
     if (coordinates) {
@@ -56,7 +72,7 @@ const PageOne = ({
             type="text"
             fullWidth
             value={coordinates}
-            onChange={(e) => setCoordinates(e.target.value)}
+            onChange={handleInputChange(setCoordinates)}
           />
         </Grid>
         <Grid item xs={12}>
@@ -67,18 +83,18 @@ const PageOne = ({
             fullWidth
             multiline
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleInputChange(setTitle)}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
             margin="dense"
-            label="Beschreibung"
+            label="Beschreibung, Links, Hashtags, ..."
             type="text"
             fullWidth
             multiline
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={handleInputChange(setDescription)}
           />
         </Grid>
       </Grid>
