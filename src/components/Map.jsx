@@ -98,7 +98,7 @@ const Map = () => {
           { latitude: marker.coordinates[0], longitude: marker.coordinates[1] }
         );
 
-        return distance <= 30000;
+        return distance <= 50000;
       });
 
       setMarkers(filteredMarkerList);
@@ -140,7 +140,7 @@ const Map = () => {
           name="Geocaching"
           inputProps={{ "aria-label": "Geocaching aktivieren/deaktivieren" }}
         />
-        <span>{geoCacheEnabled ? "30km" : "Alle"}</span>
+        <span>{geoCacheEnabled ? "50km" : "Alle"}</span>
       </ControlsContainer>
       <StyledFab
         sx={{ backgroundColor: "hsl(250, 84%, 54%)" }}

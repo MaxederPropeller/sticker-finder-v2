@@ -35,7 +35,7 @@ const PageTwo = ({ image, uploading, onImageUpload, onContinue, onBack }) => {
   }, [uploading, imageUploaded]);
 
   return (
-    <Box className="dialogContainer">
+    <Box className="dialogContainer2">
       <label htmlFor="file-upload">
         <Button
           component="span"
@@ -88,6 +88,7 @@ const PageTwo = ({ image, uploading, onImageUpload, onContinue, onBack }) => {
         sx={{ display: "none" }}
         onChange={handleImageUpload}
         disabled={uploading}
+        value={undefined}
       />
       {uploadError && (
         <FormHelperText error>
@@ -99,7 +100,7 @@ const PageTwo = ({ image, uploading, onImageUpload, onContinue, onBack }) => {
           Bitte laden Sie ein Bild hoch, bevor Sie fortfahren.
         </Typography>
       )}
-      <Box
+      {/*  <Box
         sx={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}
       >
         <Button style={styles.button} onClick={onBack}>
@@ -113,7 +114,7 @@ const PageTwo = ({ image, uploading, onImageUpload, onContinue, onBack }) => {
         >
           {imageUploaded ? <ArrowForwardIcon /> : <CloseIcon />}
         </Button>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

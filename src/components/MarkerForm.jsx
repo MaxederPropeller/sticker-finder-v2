@@ -17,6 +17,8 @@ import "../styles/MarkerForm.css";
 import { styles } from "../styles/styles.js";
 import { useMarkers } from "./MarkerContext";
 
+import { v4 as uuidv4 } from "uuid";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -41,10 +43,10 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
 
   // Load coordinates when the dialog is opened
   useEffect(() => {
-    if (open) {
+    if (open && !coordinates) {
       fetchCoordinates();
     }
-  }, [open]);
+  }, [open, coordinates]);
 
   const fetchCoordinates = async () => {
     if (navigator.geolocation) {
@@ -76,7 +78,11 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
     setUploading(true);
     const file = e.target.files[0];
     const storage = getStorage();
-    const storageRef = ref(storage, `kapkan/${file.name}`);
+
+    // Generiere einen eindeutigen Dateinamen durch Hinzufügen einer UUID
+    const uniqueFileName = `${file.name}-${uuidv4()}`;
+
+    const storageRef = ref(storage, `kapkan/${uniqueFileName}`);
 
     const reader = new FileReader();
     reader.onloadend = async () => {
@@ -85,6 +91,7 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
       const url = await getDownloadURL(snapshot.ref);
       setImage(url);
       setUploading(false);
+      e.target.value = "";
     };
     reader.readAsDataURL(file);
   };
@@ -121,10 +128,21 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
       // Zurücksetzen des Schrittes
       addMarker();
       setActiveStep(0);
+      setImage("");
     } catch (e) {
       console.error("Error adding document: ", e);
     }
   };
+  useEffect(() => {
+    if (!open) {
+      // Zustände zurücksetzen
+      setTitle("");
+      setDescription("");
+      setCoordinates("");
+      setImage("");
+      setActiveStep(0);
+    }
+  }, [open]);
 
   const pages = [
     <PageOne
