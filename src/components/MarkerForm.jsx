@@ -114,7 +114,7 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
         image,
         timestamp: Timestamp.now(),
       });
-      console.log("Document written with ID: ", docRef.id);
+
       onMarkerAdded();
 
       // Zustände zurücksetzen
