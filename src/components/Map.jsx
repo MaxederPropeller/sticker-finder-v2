@@ -67,7 +67,7 @@ const Map = () => {
     setSnackbarOpen(false);
   };
 
-  const position = useMemo(() => [46.7, 7.8], []);
+  const position = useMemo(() => [46.7, 8.0], []);
 
   const fetchMarkers = useCallback(async () => {
     const markerCollection = collection(db, "markers");
@@ -98,7 +98,7 @@ const Map = () => {
           { latitude: marker.coordinates[0], longitude: marker.coordinates[1] }
         );
 
-        return distance <= 100000;
+        return distance <= 200000;
       });
 
       setMarkers(filteredMarkerList);
@@ -140,7 +140,7 @@ const Map = () => {
           name="Geocaching"
           inputProps={{ "aria-label": "Geocaching aktivieren/deaktivieren" }}
         />
-        <span>{geoCacheEnabled ? "100km" : "Alle"}</span>
+        <span>{geoCacheEnabled ? "200km" : "Alle"}</span>
       </ControlsContainer>
       <StyledFab
         sx={{ backgroundColor: "hsl(250, 84%, 54%)" }}
@@ -166,7 +166,7 @@ const Map = () => {
           severity="success"
           sx={{ width: "100%" }}
         >
-          Marker erfolgreich hinzugefügt!
+          Sticker erfolgreich hinzugefügt!
         </Alert>
       </Snackbar>
     </StyledMapContainer>

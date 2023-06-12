@@ -16,6 +16,42 @@ const PageFour = ({
   onSubmit,
   onBack,
 }) => {
+  // Validierungsfunktionen
+  const validateTitle = (title) => {
+    return title.trim() !== "";
+  };
+
+  const validateDescription = (description) => {
+    return (
+      description.trim() === "" || /^[\w\s@#]+$/.test(description) // Erlaubt Buchstaben, Zahlen, Leerzeichen, @ und #
+    );
+  };
+
+  const validateCoordinates = (coordinates) => {
+    return coordinates.trim() !== "";
+  };
+
+  const validateImage = (image) => {
+    return !!image; // Überprüft, ob das Bild vorhanden ist
+  };
+
+  // Überprüfung der Validierung beim Einreichen
+  const handleOnSubmit = () => {
+    if (!validateTitle(title)) {
+      alert("Bitte geben Sie einen Titel ein.");
+    } else if (!validateDescription(description)) {
+      alert(
+        "Die Beschreibung darf nur Buchstaben, Zahlen, Leerzeichen, @ und # enthalten."
+      );
+    } else if (!validateCoordinates(coordinates)) {
+      alert("Bitte geben Sie die Koordinaten ein.");
+    } else if (!validateImage(image)) {
+      alert("Bitte laden Sie ein Bild hoch.");
+    } else {
+      onSubmit();
+    }
+  };
+
   return (
     <div className="dialogContainer">
       <Typography style={styles.title} variant="body1" component="div">
@@ -41,7 +77,11 @@ const PageFour = ({
         <Button style={styles.buttontwo} variant="outlined" onClick={onBack}>
           <ArrowBackIcon />
         </Button>
-        <Button style={styles.button} variant="contained" onClick={onSubmit}>
+        <Button
+          style={styles.button}
+          variant="contained"
+          onClick={handleOnSubmit}
+        >
           <SendIcon />
         </Button>
       </div>

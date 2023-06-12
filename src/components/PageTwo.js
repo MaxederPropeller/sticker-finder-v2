@@ -53,12 +53,12 @@ const PageTwo = ({ image, uploading, onImageUpload, onContinue, onBack }) => {
                     },
                   }}
                 />
-              ) : imageUploaded ? (
-                <CheckCircleIcon
+              ) : uploadError ? (
+                <CloseIcon
                   sx={{
                     fontSize: "inherit",
                     transform: "scale(4.5)",
-                    color: "hsl(150, 64%, 54%)",
+                    color: "hsl(250, 84%, 54%)",
                     paddingBottom: 3,
                     paddingTop: 3,
                     margin: 4,
