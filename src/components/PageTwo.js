@@ -12,13 +12,27 @@ import Box from "@mui/material/Box";
 import { styles } from "../styles/styles";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+
 const PageTwo = ({ image, uploading, onImageUpload, onContinue, onBack }) => {
   const [imageUploaded, setImageUploaded] = useState(false);
   const [uploadError, setUploadError] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const MAX_SIZE_MB = 15;
+  const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024; // 15MB in bytes
 
   const handleImageUpload = async (event) => {
     setImageUploaded(false); // reset state when new file is being uploaded
     setUploadError(false); // reset error state
+
+    // Check file size
+    const file = event.target.files[0];
+    if (file.size > MAX_SIZE_BYTES) {
+      setSnackbarOpen(true);
+      return;
+    }
 
     try {
       await onImageUpload(event);
@@ -36,6 +50,24 @@ const PageTwo = ({ image, uploading, onImageUpload, onContinue, onBack }) => {
 
   return (
     <Box className="dialogContainer2">
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          sx={{ width: "100%" }}
+          severity="error"
+          elevation={6}
+          variant="filled"
+        >
+          Die Datei ist zu groß. Bitte laden Sie eine Datei hoch, die kleiner
+          als 15MB ist.
+        </Alert>
+      </Snackbar>
+
       <label htmlFor="file-upload">
         <Button
           component="span"

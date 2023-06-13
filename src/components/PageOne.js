@@ -6,6 +6,8 @@ import opencage from "opencage-api-client";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Grid from "@mui/material/Grid";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 const MAX_SIZE_MB = 1;
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024; // 1MB in bytes
 
@@ -20,6 +22,7 @@ const PageOne = ({
   onBack,
 }) => {
   const [location, setLocation] = useState("");
+  const [open, setOpen] = useState(false);
 
   const checkSize = (str) => {
     const sizeInBytes = new Blob([str]).size;
@@ -31,8 +34,15 @@ const PageOne = ({
     if (checkSize(value)) {
       setter(value);
     } else {
-      alert("Eingabe überschreitet das Limit von 1MB");
+      setOpen(true);
     }
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -57,9 +67,31 @@ const PageOne = ({
         });
     }
   }, [coordinates, setTitle]);
+  const handleOnContinue = () => {
+    if (!coordinates || !title || !description) {
+      setOpen(true);
+    } else {
+      onContinue();
+    }
+  };
 
   return (
     <div className="dialogContainer">
+      <Snackbar
+        anchorOrigin={{ vertical: "Top", horizontal: "center" }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <MuiAlert
+          onClose={handleClose}
+          severity="error"
+          elevation={6}
+          variant="filled"
+        >
+          Bitte füllen Sie alle Felder korrekt aus.
+        </MuiAlert>
+      </Snackbar>
       {location && (
         <div className="locationBox">Hier bist du! - {location}</div>
       )}
@@ -102,7 +134,7 @@ const PageOne = ({
         <Button style={styles.button} onClick={onBack}>
           <ArrowBackIcon />
         </Button>
-        <Button style={styles.button} onClick={onContinue}>
+        <Button style={styles.button} onClick={handleOnContinue}>
           <ArrowForwardIcon />
         </Button>
       </div>

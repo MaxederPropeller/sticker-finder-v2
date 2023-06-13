@@ -46,6 +46,10 @@ const ControlsContainer = styled("div")({
   bottom: 8,
   left: 8,
   zIndex: 1000,
+  display: "flex",
+  flexDirection: "column",
+  fontSize: "1.1rem",
+  fontStyle: "bold",
 });
 
 const Map = () => {
@@ -54,6 +58,11 @@ const Map = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [geoCacheEnabled, setGeoCacheEnabled] = useState(true);
   const [allMarkers, setAllMarkers] = useState([]); // Neu: für alle Marker
+  const [selectedTileLayer, setSelectedTileLayer] = useState("osm");
+
+  const toggleTileLayer = () => {
+    setSelectedTileLayer((prevLayer) => (prevLayer === "osm" ? "esri" : "osm"));
+  };
 
   const onMarkerAdded = () => {
     fetchMarkers();
@@ -121,10 +130,17 @@ const Map = () => {
         style={{ height: "100%", width: "100%" }}
       >
         <MapInitializer />
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
+        {selectedTileLayer === "osm" ? (
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+        ) : (
+          <TileLayer
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+            attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+          />
+        )}
         {markers.map((marker) => (
           <MapMarker
             key={marker.id}
@@ -134,13 +150,36 @@ const Map = () => {
         ))}
       </MapContainer>
       <ControlsContainer>
-        <Switch
-          checked={geoCacheEnabled}
-          onChange={() => setGeoCacheEnabled(!geoCacheEnabled)}
-          name="Geocaching"
-          inputProps={{ "aria-label": "Geocaching aktivieren/deaktivieren" }}
-        />
-        <span>{geoCacheEnabled ? "200km" : "Alle"}</span>
+        <div>
+          <Switch
+            checked={selectedTileLayer === "esri"}
+            onChange={toggleTileLayer}
+            name="Toggle Map"
+            inputProps={{ "aria-label": "Toggle between tile layers" }}
+          />
+          <label
+            style={{
+              color: selectedTileLayer === "esri" ? "white" : "#343aeb",
+            }}
+          >
+            {selectedTileLayer === "esri" ? "Maps" : "Satellit"}
+          </label>
+        </div>
+        <div>
+          <Switch
+            checked={geoCacheEnabled}
+            onChange={() => setGeoCacheEnabled(!geoCacheEnabled)}
+            name="Geocaching"
+            inputProps={{ "aria-label": "Geocaching aktivieren/deaktivieren" }}
+          />
+          <label
+            style={{
+              color: selectedTileLayer === "esri" ? "white" : "#343aeb",
+            }}
+          >
+            {geoCacheEnabled ? "200km" : "Alle"}
+          </label>
+        </div>
       </ControlsContainer>
       <StyledFab
         sx={{ backgroundColor: "hsl(250, 84%, 54%)" }}
@@ -158,13 +197,14 @@ const Map = () => {
       />
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "Top", horizontal: "Center" }}
       >
         <Alert
           onClose={handleCloseSnackbar}
           severity="success"
-          sx={{ width: "100%" }}
+          sx={{ width: "50%" }}
         >
           Sticker erfolgreich hinzugefügt!
         </Alert>

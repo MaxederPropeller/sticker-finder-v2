@@ -144,7 +144,7 @@ const Header = () => {
             <br />
             <br />
             Unsere Mission? Das Finden und Teilen von Stickern so einfach,
-            spaßig und zugänglich wie möglich zu machen! Wir glauben, dass
+            spassig und zugänglich wie möglich zu machen! Wir glauben, dass
             Sticker mehr als nur Aufkleber sind. Sie sind Ausdruck von
             Kreativität, sie sind Kunstwerke, sie sind kleine Geschichten. Und
             wir wollen diese Geschichten mit der Welt teilen.

@@ -5,6 +5,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SendIcon from "@mui/icons-material/Send";
+import blockedWords from "./blockedWords.json";
 
 import { styles } from "../styles/styles";
 
@@ -22,8 +23,18 @@ const PageFour = ({
   };
 
   const validateDescription = (description) => {
+    // Splits the description into words
+    const descriptionWords = description.split(" ");
+
+    // Checks if any of the words are in the blocked words list
+    const containsBlockedWord = descriptionWords.some((word) =>
+      blockedWords.words.includes(word)
+    );
+
     return (
-      description.trim() === "" || /^[\w\s@#]+$/.test(description) // Erlaubt Buchstaben, Zahlen, Leerzeichen, @ und #
+      description.trim() === "" ||
+      (/^[\w\s@#,.\-!?()"']+$/.test(description) && // Erlaubt Buchstaben, Zahlen, Leerzeichen, @, #, Komma, Punkt, Bindestrich, Ausrufezeichen, Fragezeichen, Anführungszeichen, Klammer
+        !containsBlockedWord) // Überprüft, ob die Beschreibung ein blockiertes Wort enthält
     );
   };
 
@@ -41,7 +52,7 @@ const PageFour = ({
       alert("Bitte geben Sie einen Titel ein.");
     } else if (!validateDescription(description)) {
       alert(
-        "Die Beschreibung darf nur Buchstaben, Zahlen, Leerzeichen, @ und # enthalten."
+        "Die Beschreibung ist nicht mit unseren Inhaltsrichtlinien vereinbar. Bitte verwenden Sie eine andere Beschreibung."
       );
     } else if (!validateCoordinates(coordinates)) {
       alert("Bitte geben Sie die Koordinaten ein.");
