@@ -36,11 +36,53 @@ let CustomIcon = L.DivIcon.extend({
   },
 });
 
+let NewIcon = L.DivIcon.extend({
+  options: {
+    className: "new-icon",
+    html: `<div style="
+        background: url(https://cdn.shopify.com/s/files/1/0578/0770/0167/files/k1.png?v=1682167684);
+        background-size: cover;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        position: relative;
+        border: 2px solid #12b0ff;"> <!-- fügt einen roten Rand hinzu, um "neue" Marker hervorzuheben -->
+          <div style="
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 0;
+            height: 0;
+            margin-left: -5px;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 10px solid #000;">
+          </div>
+      </div>`,
+    iconSize: [25, 25],
+    popupAnchor: [-3, -76],
+  },
+});
+
+const newIcon = new NewIcon();
 const customIcon = new CustomIcon();
 
-const MapMarker = ({ position, data }) => {
+const MapMarker = ({ position, data, isNew }) => {
   const [open, setOpen] = React.useState(false);
   const [fullScreen, setFullScreen] = React.useState(false);
+
+  let tagStyle = {
+    display: "inline-block",
+    backgroundColor: "#12b0ff",
+    color: "white",
+    padding: "2px 5px",
+    borderRadius: "5px",
+    fontSize: "1rem",
+    fontWeight: "bold",
+    margin: "5px 0",
+  };
+
+  const icon = isNew ? newIcon : customIcon;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -50,9 +92,10 @@ const MapMarker = ({ position, data }) => {
     setOpen(false);
   };
   return (
-    <Marker position={position} icon={customIcon}>
-      <Popup>
+    <Marker position={position} icon={icon}>
+      <Popup className={isNew ? "new-popup" : ""}>
         <div>
+          {isNew && <div style={tagStyle}>Neu</div>}
           <h3>{data.title}</h3>
           <img
             src={data.image}

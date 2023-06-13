@@ -141,13 +141,22 @@ const Map = () => {
             attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
           />
         )}
-        {markers.map((marker) => (
-          <MapMarker
-            key={marker.id}
-            position={marker.coordinates}
-            data={marker}
-          />
-        ))}
+        {markers.map((marker) => {
+          const markerDate = new Date(marker.timestamp.seconds * 1000); // Wandelt Firebase Timestamp in JavaScript Date um
+          const now = new Date();
+          const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+          const isNew = markerDate >= oneDayAgo;
+
+          return (
+            <MapMarker
+              key={marker.id}
+              position={marker.coordinates}
+              data={marker}
+              isNew={isNew} // Gibt den "isNew"-Status an die MapMarker-Komponente weiter
+            />
+          );
+        })}
       </MapContainer>
       <ControlsContainer>
         <div>
