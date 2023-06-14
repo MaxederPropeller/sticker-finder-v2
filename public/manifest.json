@@ -1,25 +1,43 @@
 {
   "short_name": "Stickerfinder",
   "name": "Stickerfinder.ch",
+  "description": "Finden Sie die besten Sticker und Aufkleber auf Stickerfinder.ch",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "/favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "type": "image/x-icon",
+      "purpose": "any maskable"
     },
     {
-      "src": "logo192.png",
+      "src": "/logo192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any maskable"
     },
     {
-      "src": "logo512.png",
+      "src": "/logo512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
+  "start_url": "/index.html",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "scope": "/",
+  "orientation": "any",
+  "lang": "de-CH",
+  "dir": "ltr",
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Neuen Sticker gefunden",
+      "short_name": "Sticker gefunden",
+      "description": "Öffnen Sie das Dialogfeld für das Sticker Formular",
+      "url": "/?openDialog=true"
+    }
+  ]
 }

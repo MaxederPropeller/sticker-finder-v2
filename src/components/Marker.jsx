@@ -73,8 +73,8 @@ const MapMarker = ({ position, data, isNew }) => {
 
   let tagStyle = {
     display: "inline-block",
-    backgroundColor: "#12b0ff",
-    color: "white",
+    backgroundColor: "#7dfa81",
+    color: "#000",
     padding: "2px 5px",
     borderRadius: "5px",
     fontSize: "1rem",
@@ -95,7 +95,7 @@ const MapMarker = ({ position, data, isNew }) => {
     <Marker position={position} icon={icon}>
       <Popup className={isNew ? "new-popup" : ""}>
         <div>
-          {isNew && <div style={tagStyle}>Neu</div>}
+          {isNew && <div style={tagStyle}>Neu seit 24 Stunden</div>}
           <h3>{data.title}</h3>
           <img
             src={data.image}
