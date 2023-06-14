@@ -46,7 +46,7 @@ let NewIcon = L.DivIcon.extend({
         height: 20px;
         border-radius: 50%;
         position: relative;
-        border: 2px solid #12b0ff;"> <!-- fügt einen roten Rand hinzu, um "neue" Marker hervorzuheben -->
+        border: 2px solid #7dfa81;"> 
           <div style="
             position: absolute;
             bottom: -10px;

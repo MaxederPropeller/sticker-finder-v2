@@ -153,7 +153,7 @@ const Map = () => {
               key={marker.id}
               position={marker.coordinates}
               data={marker}
-              isNew={isNew} // Gibt den "isNew"-Status an die MapMarker-Komponente weiter
+              isNew={isNew}
             />
           );
         })}

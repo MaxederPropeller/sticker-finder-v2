@@ -21,7 +21,6 @@ const PageFour = ({
   const validateTitle = (title) => {
     return title.trim() !== "";
   };
-
   const validateDescription = (description) => {
     // Splits the description into words
     const descriptionWords = description.split(" ");
@@ -31,9 +30,13 @@ const PageFour = ({
       blockedWords.words.includes(word)
     );
 
+    // Aktualisierte Regex, die Umlaute und französische Akzente berücksichtigt
+    const regex =
+      /^[\w\s@#,.\-!?()"'\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff]+$/;
+
     return (
       description.trim() === "" ||
-      (/^[\w\s@#,.\-!?()"']+$/.test(description) && // Erlaubt Buchstaben, Zahlen, Leerzeichen, @, #, Komma, Punkt, Bindestrich, Ausrufezeichen, Fragezeichen, Anführungszeichen, Klammer
+      (regex.test(description) && // Erlaubt Buchstaben, Zahlen, Leerzeichen, @, #, Komma, Punkt, Bindestrich, Ausrufezeichen, Fragezeichen, Anführungszeichen, Klammer, Umlaute, französische Akzente
         !containsBlockedWord) // Überprüft, ob die Beschreibung ein blockiertes Wort enthält
     );
   };

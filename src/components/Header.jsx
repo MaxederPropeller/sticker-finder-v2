@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+
 import { useMarkers } from "./MarkerContext";
 import {
   AppBar,
   Toolbar,
+  Link,
   Typography,
   IconButton,
   Drawer,
@@ -79,6 +81,35 @@ const Header = () => {
     "Impressum",
   ];
 
+  const TotalMarkerBanner = ({ totalMarkers, newMarkers }) => {
+    return (
+      <div className="Banner">
+        <div
+          style={{
+            color: "white",
+            textAlign: "center",
+            padding: "10px",
+            fontSize: "1rem",
+          }}
+        >
+          Insgesamt {totalMarkers} Sticker gefunden!
+        </div>
+
+        <Slide direction="down" in={newMarkers > 0} mountOnEnter unmountOnExit>
+          <div
+            style={{
+              color: "white",
+              textAlign: "center",
+              padding: "10px",
+              fontSize: "1rem",
+            }}
+          >
+            + {newMarkers} neue Sticker seit deinem letzten Besuch!
+          </div>
+        </Slide>
+      </div>
+    );
+  };
   const getDialogContent = (item) => {
     switch (item) {
       case "StickerFinder.ch":
@@ -318,44 +349,16 @@ const Header = () => {
         );
     }
   };
-
-  const TotalMarkerBanner = ({ totalMarkers, newMarkers }) => {
-    return (
-      <div className="Banner">
-        <div
-          style={{
-            color: "white",
-            textAlign: "center",
-            padding: "10px",
-            fontSize: "1rem",
-          }}
-        >
-          Insgesamt {totalMarkers} Sticker gefunden!
-        </div>
-
-        <Slide direction="down" in={newMarkers > 0} mountOnEnter unmountOnExit>
-          <div
-            style={{
-              color: "white",
-              textAlign: "center",
-              padding: "10px",
-              fontSize: "1rem",
-            }}
-          >
-            + {newMarkers} neue Sticker seit deinem letzten Besuch!
-          </div>
-        </Slide>
-      </div>
-    );
-  };
-
   return (
     <div>
       <AppBar position="static" sx={{ backgroundColor: "hsl(250, 84%, 54%)" }}>
         <Toolbar>
-          <Typography variant="h6" component="div">
-            Stickerfinder.ch
-          </Typography>
+          <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
+            <Typography variant="h6" noWrap>
+              StickerFinder
+            </Typography>
+          </Link>
+
           <IconButton
             edge="start"
             color="inherit"
