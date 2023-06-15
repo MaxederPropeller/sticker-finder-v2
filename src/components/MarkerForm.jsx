@@ -32,6 +32,7 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
   const [image, setImage] = useState("");
   const [uploading, setUploading] = useState(false);
   const [file, setFile] = useState(null);
+  const [altText, setAltText] = useState("");
 
   const toBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -44,8 +45,10 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
 
   const uploadFile = async (file) => {
     const storage = getStorage();
-    const uniqueFileName = `${file.name}-${uuidv4()}`;
-    const storageRef = ref(storage, `kapkan/${uniqueFileName}`);
+    const uniqueFileName = `kapkan/kapkanbilder-${uuidv4()}`;
+    setAltText(uniqueFileName);
+    const storageRef = ref(storage, uniqueFileName);
+
     const base64String = await toBase64(file);
     const snapshot = await uploadString(storageRef, base64String, "data_url");
     const url = await getDownloadURL(snapshot.ref);
@@ -158,6 +161,7 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
         description,
         coordinates: geoPoint,
         image,
+        altText,
         timestamp: Timestamp.now(),
       });
 
@@ -167,6 +171,7 @@ const MarkerForm = ({ open, handleClose, db, onMarkerAdded }) => {
       setDescription("");
       setCoordinates("");
       setImage("");
+      setAltText("");
 
       handleClose();
 

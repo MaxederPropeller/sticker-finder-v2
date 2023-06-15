@@ -1,7 +1,7 @@
 {
   "short_name": "Stickerfinder",
   "name": "Stickerfinder.ch",
-  "description": "Finden Sie die besten Sticker und Aufkleber auf Stickerfinder.ch",
+  "description": "Willkommen in der bunten Welt von StickerFinder.ch! Entdecken Sie Sticker, teilen Sie Ihre Funde und helfen Sie uns, das größte Sticker-Universum zu erschaffen. Aktuell sind wir auf der Jagd nach den legendären KAPKAN! Stickern. Auf ins Abenteuer!",
   "icons": [
     {
       "src": "/favicon.ico",
@@ -22,12 +22,12 @@
       "purpose": "any maskable"
     }
   ],
-  "start_url": "/index.html",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#F0F0F0",
   "background_color": "#ffffff",
   "scope": "/",
-  "orientation": "any",
+  "orientation": "portrait",
   "lang": "de-CH",
   "dir": "ltr",
   "related_applications": [],

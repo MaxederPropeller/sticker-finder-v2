@@ -99,7 +99,7 @@ const MapMarker = ({ position, data, isNew }) => {
           <h3>{data.title}</h3>
           <img
             src={data.image}
-            alt={data.title}
+            alt={data.altText}
             style={{
               width: "100%",
               maxHeight: "200px",
