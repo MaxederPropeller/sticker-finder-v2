@@ -21,6 +21,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { db } from "../firebaseConfig"; // Importieren Sie Ihre Firestore-Instanz
 import "../index.css";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import FacebookIcon from "@mui/icons-material/Facebook";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -79,6 +81,21 @@ const Header = () => {
     "AGB's/ Nutzerbedingungen",
     "Datenschutzerklärung",
     "Impressum",
+    {
+      icon: <InstagramIcon />,
+      link: "https://www.instagram.com/kapkan.ch/",
+      text: "@Kapkan.ch",
+    },
+    {
+      icon: <FacebookIcon />,
+      link: "https://facebook.com/yourusername",
+      text: "Kapkan.ch",
+    },
+    {
+      icon: <InstagramIcon />,
+      link: "https://www.instagram.com/stickerfinder.ch/",
+      text: "@Stickerfinder.ch",
+    },
   ];
 
   const TotalMarkerBanner = ({ totalMarkers, newMarkers }) => {
@@ -369,15 +386,30 @@ const Header = () => {
             <MenuIcon />
           </IconButton>
         </Toolbar>
-        <Drawer anchor="right" open={open} onClose={handleDrawerClose}>
+        <Drawer open={open} anchor="right" onClose={handleDrawerClose}>
           <List>
-            {menuItems.map((text, index) => (
+            {menuItems.map((item, index) => (
               <ListItem
                 button
-                key={text}
-                onClick={() => handleDialogOpen(text)}
+                key={index}
+                onClick={() =>
+                  typeof item === "string" ? handleDialogOpen(item) : null
+                }
               >
-                <ListItemText primary={text} />
+                {typeof item === "string" ? (
+                  <ListItemText primary={item} />
+                ) : (
+                  <Link
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    color="#000"
+                    sx={{ textDecoration: "none" }}
+                  >
+                    <IconButton>{item.icon}</IconButton>
+                    {item.text}
+                  </Link>
+                )}
               </ListItem>
             ))}
           </List>
