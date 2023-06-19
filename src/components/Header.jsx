@@ -23,6 +23,7 @@ import { db } from "../firebaseConfig"; // Importieren Sie Ihre Firestore-Instan
 import "../index.css";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import LanguageIcon from "@mui/icons-material/Language";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -88,7 +89,12 @@ const Header = () => {
     },
     {
       icon: <FacebookIcon />,
-      link: "https://facebook.com/yourusername",
+      link: "https://www.facebook.com/kapkan.ch/",
+      text: "Kapkan.ch",
+    },
+    {
+      icon: <LanguageIcon />,
+      link: "https://www.kapkan.ch/",
       text: "Kapkan.ch",
     },
     {
