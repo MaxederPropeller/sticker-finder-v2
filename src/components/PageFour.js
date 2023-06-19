@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SendIcon from "@mui/icons-material/Send";
 import blockedWords from "./blockedWords.json";
-
+import { useState } from "react";
 import { styles } from "../styles/styles";
 
 const PageFour = ({
@@ -48,7 +48,7 @@ const PageFour = ({
   const validateImage = (image) => {
     return !!image; // Überprüft, ob das Bild vorhanden ist
   };
-
+  const [isSubmitting, setIsSubmitting] = useState(false); // Neuer Zustand hinzugefügt
   // Überprüfung der Validierung beim Einreichen
   const handleOnSubmit = () => {
     if (!validateTitle(title)) {
@@ -62,10 +62,10 @@ const PageFour = ({
     } else if (!validateImage(image)) {
       alert("Bitte laden Sie ein Bild hoch.");
     } else {
+      setIsSubmitting(true); // set isSubmitting to true after validation passed
       onSubmit();
     }
   };
-
   return (
     <div className="dialogContainer">
       <Typography style={styles.title} variant="body1" component="div">
@@ -95,6 +95,7 @@ const PageFour = ({
           style={styles.button}
           variant="contained"
           onClick={handleOnSubmit}
+          disabled={isSubmitting} // disable the button if isSubmitting is true
         >
           <SendIcon />
         </Button>

@@ -15,7 +15,7 @@ const StyledMapContainer = styled(Paper)({
   height: "95vh",
   width: "100vw",
   borderRadius: "4px",
-  flexGrow: 1 /* Ermöglicht es der Karte, den restlichen Raum zu füllen */,
+  flexGrow: 1,
   zIndex: 0,
   boxShadow:
     "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
@@ -57,7 +57,7 @@ const Map = () => {
   const [markers, setMarkers] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [geoCacheEnabled, setGeoCacheEnabled] = useState(true);
-  const [allMarkers, setAllMarkers] = useState([]); // Neu: für alle Marker
+  const [allMarkers, setAllMarkers] = useState([]);
   const [selectedTileLayer, setSelectedTileLayer] = useState("osm");
 
   const toggleTileLayer = () => {
@@ -85,12 +85,12 @@ const Map = () => {
       id: doc.id,
       ...doc.data(),
       coordinates: [
-        doc.data().coordinates.latitude,
-        doc.data().coordinates.longitude,
+        parseFloat(doc.data().coordinates.latitude.toFixed(5)),
+        parseFloat(doc.data().coordinates.longitude.toFixed(5)),
       ],
     }));
 
-    setAllMarkers(markerList); // Setzen aller Marker
+    setAllMarkers(markerList);
   }, [db]);
 
   useEffect(() => {
@@ -122,6 +122,17 @@ const Map = () => {
     setOpen(false);
   };
 
+  const groupedMarkers = useMemo(() => {
+    return markers.reduce((grouped, marker) => {
+      const key = marker.coordinates.join(",");
+      if (!grouped[key]) {
+        grouped[key] = [];
+      }
+      grouped[key].push(marker);
+      return grouped;
+    }, {});
+  }, [markers]);
+
   return (
     <StyledMapContainer>
       <MapContainer
@@ -141,8 +152,9 @@ const Map = () => {
             attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
           />
         )}
-        {markers.map((marker) => {
-          const markerDate = new Date(marker.timestamp.seconds * 1000); // Wandelt Firebase Timestamp in JavaScript Date um
+        {Object.values(groupedMarkers).map((markerGroup, index) => {
+          const marker = markerGroup[0];
+          const markerDate = new Date(marker.timestamp.seconds * 1000);
           const now = new Date();
           const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
@@ -150,9 +162,9 @@ const Map = () => {
 
           return (
             <MapMarker
-              key={marker.id}
+              key={index}
               position={marker.coordinates}
-              data={marker}
+              data={markerGroup}
               isNew={isNew}
             />
           );

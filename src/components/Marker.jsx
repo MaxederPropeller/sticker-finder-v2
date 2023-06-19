@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Marker, Popup } from "react-leaflet";
-import L from "leaflet"; // Import Leaflet library
-
+import L from "leaflet";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
+import MobileStepper from "@mui/material/MobileStepper";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 
 // Define a custom icon
 let CustomIcon = L.DivIcon.extend({
@@ -68,8 +70,9 @@ const newIcon = new NewIcon();
 const customIcon = new CustomIcon();
 
 const MapMarker = ({ position, data, isNew }) => {
-  const [open, setOpen] = React.useState(false);
-  const [fullScreen, setFullScreen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
+  const [fullScreen, setFullScreen] = useState(false);
 
   let tagStyle = {
     display: "inline-block",
@@ -90,16 +93,26 @@ const MapMarker = ({ position, data, isNew }) => {
 
   const handleClose = () => {
     setOpen(false);
+    setActiveStep(0);
   };
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
   return (
     <Marker position={position} icon={icon}>
       <Popup className={isNew ? "new-popup" : ""}>
         <div>
           {isNew && <div style={tagStyle}>Neu seit 24 Stunden</div>}
-          <h3>{data.title}</h3>
+          <h3>{data[activeStep].title}</h3>
           <img
-            src={data.image}
-            alt={data.altText}
+            src={data[activeStep].image}
+            alt={data[activeStep].altText}
             style={{
               width: "100%",
               maxHeight: "200px",
@@ -108,14 +121,42 @@ const MapMarker = ({ position, data, isNew }) => {
             }}
             onClick={handleClickOpen}
           />
+          {data.length > 1 && (
+            <MobileStepper
+              variant="dots"
+              steps={data.length}
+              position="static"
+              activeStep={activeStep}
+              nextButton={
+                <Button
+                  size="small"
+                  onClick={handleNext}
+                  disabled={activeStep === data.length - 1}
+                >
+                  Weiter
+                  <KeyboardArrowRight />
+                </Button>
+              }
+              backButton={
+                <Button
+                  size="small"
+                  onClick={handleBack}
+                  disabled={activeStep === 0}
+                >
+                  <KeyboardArrowLeft />
+                  Zurück
+                </Button>
+              }
+            />
+          )}
         </div>
       </Popup>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{data.title}</DialogTitle>
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+        <DialogTitle>{data[activeStep].title}</DialogTitle>
         <DialogContent>
           <img
-            src={data.image}
-            alt={data.title}
+            src={data[activeStep].image}
+            alt={data[activeStep].title}
             style={{
               width: "100%",
               maxHeight: "200px",
@@ -126,8 +167,8 @@ const MapMarker = ({ position, data, isNew }) => {
           />
           {fullScreen && (
             <img
-              src={data.image}
-              alt={data.title}
+              src={data[activeStep].image}
+              alt={data[activeStep].title}
               style={{
                 position: "fixed",
                 top: 0,
@@ -141,8 +182,35 @@ const MapMarker = ({ position, data, isNew }) => {
               onClick={() => setFullScreen(false)}
             />
           )}
-
-          <p>{data.description}</p>
+          <p>{data[activeStep].description}</p>
+          {data.length > 1 && (
+            <MobileStepper
+              variant="dots"
+              steps={data.length}
+              position="static"
+              activeStep={activeStep}
+              nextButton={
+                <Button
+                  size="small"
+                  onClick={handleNext}
+                  disabled={activeStep === data.length - 1}
+                >
+                  Weiter
+                  <KeyboardArrowRight />
+                </Button>
+              }
+              backButton={
+                <Button
+                  size="small"
+                  onClick={handleBack}
+                  disabled={activeStep === 0}
+                >
+                  <KeyboardArrowLeft />
+                  Zurück
+                </Button>
+              }
+            />
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Schließen</Button>

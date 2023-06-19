@@ -14,9 +14,6 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { styles } from "../styles/styles";
 
-const MAX_SIZE_MB = 1;
-const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024; // 1MB in bytes
-
 const PageOne = ({
   coordinates,
   setCoordinates,
@@ -32,11 +29,6 @@ const PageOne = ({
   const [canOverride, setCanOverride] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
 
-  const checkSize = (str) => {
-    const sizeInBytes = new Blob([str]).size;
-    return sizeInBytes <= MAX_SIZE_BYTES;
-  };
-
   const askForOverridePermission = () => {
     setOpenConfirm(true);
   };
@@ -50,14 +42,10 @@ const PageOne = ({
     (setter, requiresPermission = false) =>
     (event) => {
       const value = event.target.value;
-      if (checkSize(value)) {
-        if (!requiresPermission || (requiresPermission && canOverride)) {
-          setter(value);
-        } else {
-          askForOverridePermission();
-        }
+      if (!requiresPermission || (requiresPermission && canOverride)) {
+        setter(value);
       } else {
-        setOpen(true);
+        askForOverridePermission();
       }
     };
 
@@ -89,7 +77,7 @@ const PageOne = ({
           setLocation("Fehler bei der Standortbestimmung");
         });
     }
-  }, [coordinates, setTitle]);
+  }, []);
 
   const handleOnContinue = () => {
     if (!coordinates || !title || !description) {
@@ -98,7 +86,6 @@ const PageOne = ({
       onContinue();
     }
   };
-
   return (
     <div className="dialogContainer">
       <Snackbar

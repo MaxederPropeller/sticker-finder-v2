@@ -1,21 +1,30 @@
-// MarkerContext.js
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebaseConfig"; // Stellen Sie sicher, dass dies der Pfad zu Ihrer Firestore-Instanz ist
 
 export const MarkerContext = createContext();
 
+const fetchMarkers = async () => {
+  const markersCollection = collection(db, "markers");
+  const markerSnapshot = await getDocs(markersCollection);
+  return markerSnapshot.size;
+};
+
 export function MarkerProvider({ children }) {
   const [markerCount, setMarkerCount] = useState(null);
 
   useEffect(() => {
-    const fetchMarkers = async () => {
-      const markersCollection = collection(db, "markers");
-      const markerSnapshot = await getDocs(markersCollection);
-      setMarkerCount(markerSnapshot.size);
+    const loadMarkers = async () => {
+      try {
+        const markers = await fetchMarkers();
+        setMarkerCount(markers);
+      } catch (error) {
+        console.error("Failed to fetch markers", error);
+        // hier könnten Sie auch einen Fehlerzustand festlegen und diesen in Ihrer Anwendung anzeigen
+      }
     };
 
-    fetchMarkers();
+    loadMarkers();
   }, []);
 
   const addMarker = () => {
