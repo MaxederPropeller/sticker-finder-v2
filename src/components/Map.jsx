@@ -52,6 +52,10 @@ const ControlsContainer = styled("div")({
   fontStyle: "bold",
 });
 
+const roundCoord = (coord) => {
+  return Math.round(coord * 1e4) / 1e4;
+};
+
 const Map = () => {
   const [open, setOpen] = useState(false);
   const [markers, setMarkers] = useState([]);
@@ -85,8 +89,8 @@ const Map = () => {
       id: doc.id,
       ...doc.data(),
       coordinates: [
-        parseFloat(doc.data().coordinates.latitude.toFixed(5)),
-        parseFloat(doc.data().coordinates.longitude.toFixed(5)),
+        roundCoord(parseFloat(doc.data().coordinates.latitude)),
+        roundCoord(parseFloat(doc.data().coordinates.longitude)),
       ],
     }));
 
@@ -124,7 +128,7 @@ const Map = () => {
 
   const groupedMarkers = useMemo(() => {
     return markers.reduce((grouped, marker) => {
-      const key = marker.coordinates.join(",");
+      const key = marker.coordinates.map(roundCoord).join(","); // Verwenden Sie die Funktion roundCoord hier
       if (!grouped[key]) {
         grouped[key] = [];
       }
@@ -198,36 +202,21 @@ const Map = () => {
               color: selectedTileLayer === "esri" ? "white" : "#343aeb",
             }}
           >
-            {geoCacheEnabled ? "200km" : "Alle"}
+            Geocaching
           </label>
         </div>
       </ControlsContainer>
-      <StyledFab
-        sx={{ backgroundColor: "hsl(250, 84%, 54%)" }}
-        color="primary"
-        aria-label="add"
-        onClick={handleOpen}
-      >
+      <StyledFab color="primary" aria-label="add" onClick={handleOpen}>
         <AddIcon />
       </StyledFab>
-      <MarkerForm
-        open={open}
-        handleClose={handleClose}
-        db={db}
-        onMarkerAdded={onMarkerAdded}
-      />
+      <MarkerForm open={open} onClose={handleClose} onAdded={onMarkerAdded} />
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={3000}
+        autoHideDuration={6000}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "Top", horizontal: "Center" }}
       >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity="success"
-          sx={{ width: "50%" }}
-        >
-          Sticker erfolgreich hinzugefügt!
+        <Alert onClose={handleCloseSnackbar} severity="success">
+          Marker erfolgreich hinzugefügt!
         </Alert>
       </Snackbar>
     </StyledMapContainer>
