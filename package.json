@@ -13,6 +13,7 @@
     "axios": "^1.4.0",
     "browser-image-compression": "^2.0.2",
     "exif-js": "^2.3.0",
+    "file-saver": "^2.0.5",
     "firebase": "^9.22.2",
     "geolib": "^3.3.4",
     "leaflet": "^1.9.4",
