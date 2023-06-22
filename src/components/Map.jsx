@@ -1,4 +1,11 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useReducer,
+} from "react";
+import { v4 as uuidv4 } from "uuid";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { db } from "../firebaseConfig";
@@ -7,9 +14,11 @@ import MapMarker from "./Marker";
 import { Paper, Fab, Switch } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/system";
-import MarkerForm from "./MarkerForm";
+
 import { Snackbar, Alert } from "@mui/material";
 import { getDistance } from "geolib";
+import { storage } from "../firebaseConfig";
+import { UploadPage, GeocachePage, OverviewPage } from "./multistepForm";
 
 const StyledMapContainer = styled(Paper)({
   height: "95vh",
@@ -55,6 +64,29 @@ const ControlsContainer = styled("div")({
 const roundCoord = (coord) => {
   return Math.round(coord * 1e4) / 1e4;
 };
+
+const NEXT = "NEXT";
+const BACK = "BACK";
+const SET_DATA = "SET_DATA";
+const OPEN_FORM = "OPEN_FORM";
+const CLOSE_FORM = "CLOSE_FORM";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case NEXT:
+      return { ...state, currentStepIndex: state.currentStepIndex + 1 };
+    case BACK:
+      return { ...state, currentStepIndex: state.currentStepIndex - 1 };
+    case SET_DATA:
+      return { ...state, data: { ...state.data, ...action.data } };
+    case OPEN_FORM:
+      return { ...state, formIsOpen: true };
+    case CLOSE_FORM:
+      return { ...state, formIsOpen: false, currentStepIndex: 0, data: {} };
+    default:
+      return state;
+  }
+}
 
 const Map = () => {
   const [open, setOpen] = useState(false);
@@ -117,14 +149,58 @@ const Map = () => {
       setMarkers(filteredMarkerList);
     }
   }, [geoCacheEnabled, allMarkers, position]);
+  const [state, dispatch] = useReducer(reducer, {
+    currentStepIndex: 0,
+    data: {},
+    formIsOpen: false,
+  });
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  function openForm() {
+    dispatch({ type: OPEN_FORM });
+  }
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  function closeForm() {
+    dispatch({ type: CLOSE_FORM });
+  }
+
+  function next() {
+    dispatch({ type: NEXT });
+  }
+
+  function back() {
+    dispatch({ type: BACK });
+  }
+
+  function setData(data) {
+    dispatch({ type: SET_DATA, data });
+  }
+
+  async function submit(data) {
+    // Implementiere das Senden der Daten an Firestore und das Speichern des Bildes im Storage Bucket
+    const filename = `kapkan_bilder_Sticker_${uuidv4()}`;
+
+    // Upload the image to the bucket
+    const imageRef = storage.ref(`kapkan/${filename}`);
+    const snapshot = await imageRef.put(data.image);
+    const imageUrl = await snapshot.ref.getDownloadURL();
+
+    // Save the data to Firestore
+    const docRef = db.collection("markers").doc();
+    await docRef.set({ ...data, imageUrl });
+
+    closeForm();
+    onMarkerAdded();
+  }
+
+  const steps = [
+    <UploadPage next={next} setData={setData} />,
+    <GeocachePage next={next} back={back} setData={setData} />,
+    <OverviewPage
+      data={state.data}
+      back={back}
+      submit={() => submit(state.data)}
+    />,
+  ];
 
   const groupedMarkers = useMemo(() => {
     return markers.reduce((grouped, marker) => {
@@ -206,10 +282,11 @@ const Map = () => {
           </label>
         </div>
       </ControlsContainer>
-      <StyledFab color="primary" aria-label="add" onClick={handleOpen}>
+      <StyledFab color="primary" aria-label="add" onClick={openForm}>
         <AddIcon />
       </StyledFab>
-      <MarkerForm open={open} onClose={handleClose} onAdded={onMarkerAdded} />
+      {state.formIsOpen && steps[state.currentStepIndex]}
+
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}

@@ -9,11 +9,6 @@ import Button from "@mui/material/Button";
 import MobileStepper from "@mui/material/MobileStepper";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import GetAppIcon from "@mui/icons-material/GetApp";
-
-import axios from "axios";
-import { saveAs } from "file-saver";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 // Define a custom icon
 let CustomIcon = L.DivIcon.extend({
@@ -109,31 +104,6 @@ const MapMarker = ({ position, data, isNew }) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const downloadImage = async (imageUrl) => {
-    const storage = getStorage();
-    const imageRef = ref(storage, imageUrl);
-    getDownloadURL(imageRef)
-      .then((url) => {
-        const xhr = new XMLHttpRequest();
-        xhr.responseType = "blob";
-        xhr.onload = function (event) {
-          const blob = xhr.response;
-          const urlCreator = window.URL || window.webkitURL;
-          const imageUrl = urlCreator.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.href = imageUrl;
-          link.download = "image.jpg";
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        };
-        xhr.open("GET", url);
-        xhr.send();
-      })
-      .catch((error) => {
-        console.error(`Failed to download image: ${error}`);
-      });
-  };
   return (
     <Marker position={position} icon={icon}>
       <Popup className={isNew ? "new-popup" : ""}>
@@ -195,20 +165,6 @@ const MapMarker = ({ position, data, isNew }) => {
             }}
             onClick={() => setFullScreen(true)}
           />
-          <a
-            onClick={() => downloadImage(data[activeStep].image)}
-            style={{
-              position: "absolute",
-              right: "10px",
-              top: "10px",
-              backgroundColor: "rgba(255,255,255,0.5)",
-              borderRadius: "50%",
-              padding: "5px",
-              cursor: "pointer",
-            }}
-          >
-            <GetAppIcon />
-          </a>
           {fullScreen && (
             <img
               src={data[activeStep].image}

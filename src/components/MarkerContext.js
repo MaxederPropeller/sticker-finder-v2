@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebaseConfig"; // Stellen Sie sicher, dass dies der Pfad zu Ihrer Firestore-Instanz ist
+import { db } from "../firebaseConfig";
 
 export const MarkerContext = createContext();
 

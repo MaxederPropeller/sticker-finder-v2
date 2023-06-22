@@ -12,7 +12,6 @@ import {
 import "./index.css";
 
 import { MarkerProvider } from "./components/MarkerContext";
-import MarkerForm from "./components/MarkerForm";
 
 function App() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -35,7 +34,6 @@ function App() {
 
   return (
     <MarkerProvider>
-      <MarkerForm />
       <div className="App">
         <Header />
         <Map />
