@@ -18,10 +18,7 @@ export function MarkerProvider({ children }) {
       try {
         const markers = await fetchMarkers();
         setMarkerCount(markers);
-      } catch (error) {
-        console.error("Failed to fetch markers", error);
-        // hier könnten Sie auch einen Fehlerzustand festlegen und diesen in Ihrer Anwendung anzeigen
-      }
+      } catch (error) {}
     };
 
     loadMarkers();
