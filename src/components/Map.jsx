@@ -72,7 +72,7 @@ const Map = () => {
   };
 
   const handleCloseSnackbar = (event, reason) => {
-    if (reason === "clickaway") {
+    if (reason === "clickaway" || reason === "timeout") {
       return;
     }
     setSnackbarOpen(false);

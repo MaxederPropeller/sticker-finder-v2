@@ -115,7 +115,7 @@ const GeocachePage = ({ next, back, setData, onClose }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <StyledDialogTitle allFieldsFilled={allFieldsFilled}>
           {allFieldsFilled
-            ? "Ready to go?"
+            ? "Ready to go!"
             : "Standort abfragen und Beschreibung hinzufügen"}
           <IconButton
             color="inherit"

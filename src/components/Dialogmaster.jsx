@@ -10,6 +10,9 @@ import {
 } from "firebase/firestore";
 import Dialog from "@mui/material/Dialog";
 
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
 import { db } from "../firebaseConfig";
 import UploadPage from "./UploadPage";
 import OverviewPage from "./OverviewPage";
@@ -20,6 +23,9 @@ const DialogMaster = ({ open, onClose, setReloadMarkers }) => {
   const [dialogData, setDialogData] = useState({
     coordinates: { lat: 0, lng: 0 },
   });
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
   const handleClose = () => {
     onClose();
@@ -33,7 +39,13 @@ const DialogMaster = ({ open, onClose, setReloadMarkers }) => {
     setCurrentStep(currentStep + 1);
     setDialogData(updatedData);
   };
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
 
+    setOpenSnackbar(false);
+  };
   const handleBack = () => {
     setCurrentStep(currentStep - 1);
   };
@@ -64,10 +76,14 @@ const DialogMaster = ({ open, onClose, setReloadMarkers }) => {
       setCurrentStep(0);
       setDialogData({});
       handleClose();
-      // Setzen Sie reloadMarkers auf true, wenn das Formular erfolgreich abgesendet wurde
       setReloadMarkers(true);
+      setSnackbarSeverity("success");
+      setSnackbarMessage("Marker wurde hinzugefügt");
+      setOpenSnackbar(true);
     } catch (error) {
-      console.error("Fehler beim Hinzufügen eines Dokuments: ", error);
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Marker konnte nicht hinzugefügt werden");
+      setOpenSnackbar(true);
     }
   };
 
@@ -131,6 +147,20 @@ const DialogMaster = ({ open, onClose, setReloadMarkers }) => {
           onClose={onClose}
         />
       )}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <MuiAlert
+          onClose={handleCloseSnackbar}
+          severity={snackbarSeverity}
+          elevation={6}
+          variant="filled"
+        >
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
     </Dialog>
   );
 };
