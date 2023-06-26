@@ -58,32 +58,13 @@ const Map = () => {
   const [allMarkers, setAllMarkers] = useState([]);
   const [selectedTileLayer, setSelectedTileLayer] = useState("osm");
   const [dialogOpen, setDialogOpen] = useState(false);
-
-  const closeDialogform = (event) => {
-    // Check if the key pressed is "Escape"
-    if (event && event.key === "Escape") {
-      setDialogOpen(false);
-    } else if (!event) {
-      setDialogOpen(false);
-    }
-  };
-
-  const clickawayListener = (event) => {
-    const dialogElement = document.getElementById("my-dialog-id");
-    if (dialogElement && !dialogElement.contains(event.target)) {
-      closeDialogform();
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("click", clickawayListener);
-    return () => {
-      window.removeEventListener("click", clickawayListener);
-    };
-  }, []);
+  const [reloadMarkers, setReloadMarkers] = useState(false);
 
   const openDialogform = () => {
     setDialogOpen(true);
+  };
+  const closeDialogform = () => {
+    setDialogOpen(false);
   };
 
   const toggleTileLayer = () => {
@@ -117,6 +98,14 @@ const Map = () => {
   useEffect(() => {
     fetchMarkers();
   }, [fetchMarkers]);
+
+  useEffect(() => {
+    // Wenn reloadMarkers true ist, laden Sie die Marker erneut und setzen Sie reloadMarkers zurück auf false
+    if (reloadMarkers) {
+      fetchMarkers();
+      setReloadMarkers(false);
+    }
+  }, [fetchMarkers, reloadMarkers]);
 
   useEffect(() => {
     if (!geoCacheEnabled) {
@@ -158,18 +147,18 @@ const Map = () => {
             id="my-dialog-id"
             open={dialogOpen}
             onClose={closeDialogform}
-            onBackdropClick={closeDialogform}
-            onEscapeKeyDown={closeDialogform}
+            setReloadMarkers={setReloadMarkers}
           />
         )}
+
         <Fab
           color="primary"
           aria-label="add"
           onClick={openDialogform}
           sx={{
             position: "absolute",
-            bottom: 16,
-            right: 16,
+            bottom: 25,
+            right: 25,
             zIndex: 1000,
           }}
         >

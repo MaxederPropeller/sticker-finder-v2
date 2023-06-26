@@ -1,22 +1,46 @@
 import React from "react";
-import { Dialog } from "@mui/material";
+import { Dialog, IconButton } from "@mui/material";
 import {
   DialogTitle,
   DialogContent,
   DialogActions,
   Button,
-  IconButton,
   StyledDialogTitleEnd,
   StyledDialogContent,
   StyledDialogActions,
   StyledButton,
   StyledIconButton,
 } from "../styles/MarkerForm";
+import CloseIcon from "@mui/icons-material/Close";
 
-const OverviewPage = ({ next, back, data, submit, closeDialog }) => {
+const OverviewPage = ({ next, back, data, submit, onClose }) => {
   return (
-    <Dialog open={true} maxWidth="sm" fullWidth>
-      <StyledDialogTitleEnd data={data}>Übersicht</StyledDialogTitleEnd>
+    <Dialog
+      open={true}
+      onClose={(event, reason) => {
+        if (reason === "backdropClick" || reason === "escapeKeyDown") {
+          onClose();
+          // Hier können Sie zusätzliche Logik hinzufügen, wenn der Dialog durch Escape oder ClickAway geschlossen wird
+        }
+      }}
+      maxWidth="sm"
+      fullWidth
+    >
+      <StyledDialogTitleEnd data={data}>
+        Deine Kontrolle vor dem Abschicken!
+        <IconButton
+          color="inherit"
+          aria-label="close"
+          sx={{
+            position: "absolute",
+            right: 0,
+            top: 0,
+          }}
+          onClick={onClose}
+        >
+          <CloseIcon />
+        </IconButton>
+      </StyledDialogTitleEnd>
       <StyledDialogContent>
         {data.image && (
           <img

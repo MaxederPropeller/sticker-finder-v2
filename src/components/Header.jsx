@@ -115,9 +115,9 @@ const Header = () => {
             fontSize: "1rem",
           }}
         >
-          !Aktuell wird die Seite gewartet. Es können zurzeit keine neuen
-          Sticker hinzugefügt werden!
-          {/*       Insgesamt {totalMarkers} Sticker gefunden! */}
+          {/*    !Aktuell wird die Seite gewartet. Es können zurzeit keine neuen
+          Sticker hinzugefügt werden! */}
+          Insgesamt {totalMarkers} Sticker gefunden!
         </div>
 
         <Slide direction="down" in={newMarkers > 0} mountOnEnter unmountOnExit>

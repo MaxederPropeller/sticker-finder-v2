@@ -15,12 +15,15 @@ import UploadPage from "./UploadPage";
 import OverviewPage from "./OverviewPage";
 import GeocachePage from "./GeocachePage";
 
-const DialogMaster = (props) => {
+const DialogMaster = ({ open, onClose, setReloadMarkers }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [dialogData, setDialogData] = useState({
     coordinates: { lat: 0, lng: 0 },
   });
 
+  const handleClose = () => {
+    onClose();
+  };
   const handleNext = (newData) => {
     const updatedData = {
       ...dialogData,
@@ -60,7 +63,9 @@ const DialogMaster = (props) => {
 
       setCurrentStep(0);
       setDialogData({});
-      props.onClose(); // Schließen Sie das Dialogfeld, wenn die Daten erfolgreich gespeichert wurden
+      handleClose();
+      // Setzen Sie reloadMarkers auf true, wenn das Formular erfolgreich abgesendet wurde
+      setReloadMarkers(true);
     } catch (error) {
       console.error("Fehler beim Hinzufügen eines Dokuments: ", error);
     }
@@ -92,12 +97,22 @@ const DialogMaster = (props) => {
   };
 
   return (
-    <Dialog open={props.open} onClose={props.onClose}>
+    <Dialog
+      open={open}
+      onClose={(event, reason) => {
+        if (reason === "backdropClick" || reason === "escapeKeyDown") {
+          handleClose();
+          // Hier können Sie zusätzliche Logik hinzufügen, wenn der Dialog durch Escape oder ClickAway geschlossen wird
+        }
+      }}
+      maxWidth="sm"
+      fullWidth
+    >
       {currentStep === 0 && (
         <UploadPage
           next={handleNext}
           setData={setDialogData}
-          closeDialog={props.onClose}
+          onClose={onClose}
         />
       )}
       {currentStep === 1 && (
@@ -105,7 +120,7 @@ const DialogMaster = (props) => {
           next={handleNext}
           back={handleBack}
           setData={setDialogData}
-          closeDialog={props.onClose}
+          onClose={onClose}
         />
       )}
       {currentStep === 2 && (
@@ -113,7 +128,7 @@ const DialogMaster = (props) => {
           data={dialogData}
           back={handleBack}
           submit={handleSubmit}
-          closeDialog={props.onClose}
+          onClose={onClose}
         />
       )}
     </Dialog>

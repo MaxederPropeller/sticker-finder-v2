@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Dialog, Alert, TextField, Snackbar } from "@mui/material";
+import { Dialog, Alert, TextField, Snackbar, IconButton } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -10,7 +10,6 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import imageCompression from "browser-image-compression";
-import { Button, DialogTitle } from "@mui/material";
 import {
   StyledDialogTitle,
   StyledDialogContent,
@@ -18,8 +17,9 @@ import {
   StyledButton,
   StyledIconButton,
 } from "../styles/MarkerForm";
+import CloseIcon from "@mui/icons-material/Close";
 
-const UploadPage = ({ next, setData }) => {
+const UploadPage = ({ next, setData, onClose }) => {
   const { register, handleSubmit } = useForm();
   const [selectedfile, setSelectedfile] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
@@ -27,7 +27,7 @@ const UploadPage = ({ next, setData }) => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("error");
 
-  const handleCloseSnackbar = (event, reason, closeDialog) => {
+  const handleCloseSnackbar = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
@@ -80,6 +80,8 @@ const UploadPage = ({ next, setData }) => {
       setOpenSnackbar(true);
       setSnackbarSeverity("success");
       setSnackbarMessage("Bild erfolgreich hochgeladen!");
+
+      // Schließen Sie das Dialogfenster nach dem erfolgreichen Hochladen des Bildes
     } catch (error) {
       setUploadSuccess(false);
       setOpenSnackbar(true);
@@ -89,11 +91,32 @@ const UploadPage = ({ next, setData }) => {
   };
 
   return (
-    <Dialog open={true} maxWidth="sm" fullWidth>
+    <Dialog
+      open={true}
+      onClose={(event, reason) => {
+        if (reason === "backdropClick" || reason === "escapeKeyDown") {
+          onClose();
+          // Hier können Sie zusätzliche Logik hinzufügen, wenn der Dialog durch Escape oder ClickAway geschlossen wird
+        }
+      }}
+      maxWidth="sm"
+      fullWidth
+    >
       <StyledDialogTitle selectedfile={selectedfile}>
         {selectedfile ? "Bild ausgewählt" : "Bild hochladen"}
+        <IconButton
+          color="inherit"
+          aria-label="close"
+          sx={{
+            position: "absolute",
+            right: 0,
+            top: 0,
+          }}
+          onClick={onClose}
+        >
+          <CloseIcon />
+        </IconButton>
       </StyledDialogTitle>
-
       <form onSubmit={handleSubmit(onSubmit)}>
         <StyledDialogContent>
           <StyledIconButton color="primary" component="label">

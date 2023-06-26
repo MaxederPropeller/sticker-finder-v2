@@ -1,10 +1,11 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Dialog, TextField, Button } from "@mui/material";
+import { Dialog, TextField, Button, IconButton } from "@mui/material";
 import opencage from "opencage-api-client";
 import { styled } from "@mui/system";
 import { DialogTitle } from "@mui/material";
 import { GeoPoint } from "firebase/firestore";
+import CloseIcon from "@mui/icons-material/Close";
 
 import {
   StyledDialogContent,
@@ -18,7 +19,7 @@ const StyledDialogTitle = styled(DialogTitle)(({ theme, allFieldsFilled }) => ({
   backgroundColor: allFieldsFilled ? "#4caf50" : "#f44336", // green or red
 }));
 
-const GeocachePage = ({ next, back, setData, closeDialog }) => {
+const GeocachePage = ({ next, back, setData, onClose }) => {
   const {
     register,
     handleSubmit,
@@ -100,10 +101,34 @@ const GeocachePage = ({ next, back, setData, closeDialog }) => {
   };
 
   return (
-    <Dialog open={true} maxWidth="sm" fullWidth>
+    <Dialog
+      open={true}
+      onClose={(event, reason) => {
+        if (reason === "backdropClick" || reason === "escapeKeyDown") {
+          onClose();
+          // Hier können Sie zusätzliche Logik hinzufügen, wenn der Dialog durch Escape oder ClickAway geschlossen wird
+        }
+      }}
+      maxWidth="sm"
+      fullWidth
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <StyledDialogTitle allFieldsFilled={allFieldsFilled}>
-          Dein Standort und Beschreibung
+          {allFieldsFilled
+            ? "Ready to go?"
+            : "Standort abfragen und Beschreibung hinzufügen"}
+          <IconButton
+            color="inherit"
+            aria-label="close"
+            sx={{
+              position: "absolute",
+              right: 0,
+              top: 0,
+            }}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
         </StyledDialogTitle>
         <StyledDialogContent>
           <TextField
