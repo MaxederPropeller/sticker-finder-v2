@@ -56,15 +56,9 @@ const GeocachePage = ({ next, back, setData, onClose }) => {
   useEffect(() => {
     fetchGeolocationFromBrowser();
     const isAllFieldsFilled =
-      allGeoInfoAvailable &&
-      getValues("description") !== "" &&
-      coordinates.lat !== null &&
-      coordinates.lng !== null &&
-      addressDetails !== "";
+      allGeoInfoAvailable && getValues("description") !== "";
 
     setAllFieldsFilled(isAllFieldsFilled);
-
-    console.log("Are all fields filled:", isAllFieldsFilled); // Debug message
   }, [
     allGeoInfoAvailable,
     getValues,
@@ -152,6 +146,14 @@ const GeocachePage = ({ next, back, setData, onClose }) => {
             helperText={errors.description && "Beschreibung ist erforderlich."}
             color={errors.description ? "secondary" : "primary"}
             style={{ marginBottom: "10px", marginTop: "10px" }}
+            onChange={(e) => {
+              register("description").onChange(e);
+              setAllFieldsFilled(allGeoInfoAvailable && e.target.value !== "");
+            }}
+            onBlur={(e) => {
+              register("description").onBlur(e);
+              setAllFieldsFilled(allGeoInfoAvailable && e.target.value !== "");
+            }}
           />
         </StyledDialogContent>
         <StyledDialogActions>

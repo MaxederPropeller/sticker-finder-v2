@@ -6,7 +6,7 @@ import { collection, getDocs } from "firebase/firestore";
 import MapMarker from "./Marker";
 import { Paper, Switch } from "@mui/material";
 import { styled } from "@mui/system";
-import { Snackbar, Alert } from "@mui/material";
+import { Snackbar, Alert, Box } from "@mui/material";
 import { getDistance } from "geolib";
 import DialogMaster from "./Dialogmaster";
 import { Fab } from "@mui/material";
@@ -26,6 +26,7 @@ const StyledMapContainer = styled(Paper)({
 
 const ControlsContainer = styled("div")({
   position: "absolute",
+  width: "100vw",
   bottom: 8,
   left: 8,
   zIndex: 1000,
@@ -59,6 +60,7 @@ const Map = () => {
   const [selectedTileLayer, setSelectedTileLayer] = useState("osm");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [reloadMarkers, setReloadMarkers] = useState(false);
+  const [prevMarkersLength, setPrevMarkersLength] = useState(0);
 
   const openDialogform = () => {
     setDialogOpen(true);
@@ -108,6 +110,16 @@ const Map = () => {
   }, [fetchMarkers, reloadMarkers]);
 
   useEffect(() => {
+    // Vergleichen Sie die aktuelle Länge von 'markers' mit der vorher gespeicherten Länge
+    if (markers.length === prevMarkersLength + 1) {
+      setSnackbarOpen(true);
+    }
+
+    // Aktualisieren Sie die gespeicherte Länge
+    setPrevMarkersLength(markers.length);
+  }, [markers, prevMarkersLength]);
+
+  useEffect(() => {
     if (!geoCacheEnabled) {
       setMarkers(allMarkers);
     } else {
@@ -117,7 +129,7 @@ const Map = () => {
           { latitude: marker.coordinates[0], longitude: marker.coordinates[1] }
         );
 
-        return distance <= 200000;
+        return distance <= 40000000;
       });
 
       setMarkers(filteredMarkerList);
@@ -142,28 +154,6 @@ const Map = () => {
         zoom={9}
         style={{ height: "100%", width: "100%" }}
       >
-        {dialogOpen && (
-          <DialogMaster
-            id="my-dialog-id"
-            open={dialogOpen}
-            onClose={closeDialogform}
-            setReloadMarkers={setReloadMarkers}
-          />
-        )}
-
-        <Fab
-          color="primary"
-          aria-label="add"
-          onClick={openDialogform}
-          sx={{
-            position: "absolute",
-            bottom: 25,
-            right: 25,
-            zIndex: 1000,
-          }}
-        >
-          <AddIcon />
-        </Fab>
         <MapInitializer />
         {selectedTileLayer === "osm" ? (
           <TileLayer
@@ -196,7 +186,7 @@ const Map = () => {
       </MapContainer>
 
       <ControlsContainer>
-        <div>
+        <Box>
           <Switch
             checked={selectedTileLayer === "esri"}
             onChange={toggleTileLayer}
@@ -205,12 +195,36 @@ const Map = () => {
           />
           <label
             style={{
-              color: selectedTileLayer === "esri" ? "white" : "#343aeb",
+              color: selectedTileLayer === "esri" ? "red" : "blue",
             }}
           >
             {selectedTileLayer === "esri" ? "Maps" : "Satellit"}
           </label>
-        </div>
+        </Box>
+        {dialogOpen && (
+          <DialogMaster
+            id="my-dialog-id"
+            open={dialogOpen}
+            onClose={closeDialogform}
+            setReloadMarkers={setReloadMarkers}
+          />
+        )}
+
+        <Fab
+          color="primary"
+          aria-label="add"
+          onClick={openDialogform}
+          sx={{
+            alignSelf: "flex-end",
+            position: "absolute",
+            bottom: "0px",
+            right: "0px",
+            margin: "1.5rem",
+            zIndex: 1000,
+          }}
+        >
+          <AddIcon />
+        </Fab>
       </ControlsContainer>
 
       <Snackbar
