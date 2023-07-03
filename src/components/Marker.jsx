@@ -9,6 +9,42 @@ import Button from "@mui/material/Button";
 import MobileStepper from "@mui/material/MobileStepper";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+
+import { v4 as uuidv4 } from "uuid";
+
+const downloadImage = (imagePath) => {
+  // Get reference to storage service
+  const storage = getStorage();
+
+  // Create a reference to the file we want to download
+  let imageRef = ref(storage, imagePath);
+
+  getDownloadURL(imageRef)
+    .then((url) => {
+      // Fetch the image
+      fetch(url)
+        .then((response) => response.blob())
+        .then((blob) => {
+          // Create a link element
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          // Extract UUID from the image path and create the new download name
+          const uuid = imagePath.split("/")[2].split("_")[3];
+          link.download = `Kapkan_Stickerfinder_Bilder_${uuidv4()}`;
+          // Trigger the download by simulating a click
+          link.click();
+        })
+        .catch((error) => {
+          // Handle errors as required
+          console.error(error);
+        });
+    })
+    .catch((error) => {
+      // Handle errors as required
+      console.error(error);
+    });
+};
 
 // Define a custom icon
 let CustomIcon = L.DivIcon.extend({
@@ -165,6 +201,19 @@ const MapMarker = ({ position, data, isNew }) => {
             }}
             onClick={() => setFullScreen(true)}
           />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => downloadImage(data[activeStep].image)}
+            style={{
+              background: "transparent",
+              border: "none",
+              width: "100%",
+              color: "#000",
+            }}
+          >
+            Bild herunterladen
+          </Button>
           {fullScreen && (
             <img
               src={data[activeStep].image}
